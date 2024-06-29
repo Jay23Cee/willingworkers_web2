@@ -68,7 +68,7 @@ export default function CreateJobPost(prop: any) {
     contact: {
       name: "",
       email: "",
-      phone: "",
+      phone: "(323)937-5950",
     },
     expirationDate: expirationDateString,
   }));
@@ -78,6 +78,9 @@ export default function CreateJobPost(prop: any) {
   >([]);
   const [isCustomQualificationsSaved, setIsCustomQualificationsSaved] =
     useState<boolean>(false);
+
+
+const [contactPhone, setContactPhone] = useState<string>("(323)937-5950");
 
   const addCustomQualification = () => {
     setCustomQualifications((prevQualifications) => [
@@ -462,7 +465,7 @@ export default function CreateJobPost(prop: any) {
                 type="tel"
                 id="phone"
                 name="phone"
-               value="(323) 937-5950"
+               value="(323)937-5950"
                 onChange={handleInputChange}
                 required
               />
