@@ -57,9 +57,9 @@ const Mainmenu = ({ onOptionClick, isAdmin, jobLimit, userLimit }: MainmenuProps
               {userLimit ? (
                 <div>
                   <p style={{ color: 'red', fontWeight: 'bold' }}>
-                    User limit is reached. (5/5 admin users allowed)
+                   User limit has been reached (5/5)
                     <br/>
-                    Delete a User to Add More
+                    Delete users to add more
                   </p>
                 
                 </div>

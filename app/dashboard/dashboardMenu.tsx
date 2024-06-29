@@ -136,12 +136,12 @@ export default function DashboardMenu() {
                 key: "submenu-main-menu",
                 label: <span style={{ color: 'red', fontWeight: 'bold' }}>Admin List is Full</span>,
               },
-              { key: "all-job-posting", label: "All Job Posting" },
+              { key: "all-list-user", label: "View All Users" },
              
             ]
           : [
-              { key: "new-job-posting", label: "New Job Posting" },
-              { key: "all-job-posting", label: "All Job Posting" },
+              { key: "new-user", label: "Add New User" },
+              { key: "all-list-user", label: "View All Users" },
             ],
         }
       : null,
