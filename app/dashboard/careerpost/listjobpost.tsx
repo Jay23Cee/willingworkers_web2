@@ -23,7 +23,6 @@ export default function ListJobPosting(props: any) {
     JobPostings_list.jobPostings.length > 0
   );
 
-
   useEffect(() => {
     let isMounted = true;
     async function fetchData() {
@@ -89,7 +88,11 @@ export default function ListJobPosting(props: any) {
             <h3>Description:</h3>
             <p>{jobPosting.description}</p>
             <h3>Qualifications:</h3>
-            <p>{jobPosting.qualifications}</p>
+            <p>
+              {jobPosting.qualifications && jobPosting.qualifications.length > 0
+                ? jobPosting.qualifications.join(", ")
+                : "High School"}
+            </p>
 
             <h3>Contact:</h3>
             <p>Name: {jobPosting.contact.name}</p>

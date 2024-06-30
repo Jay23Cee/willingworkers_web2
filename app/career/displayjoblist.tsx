@@ -26,14 +26,33 @@ export default function DisplayJobList(props: {
             <h4>{jobPosting.location}</h4>
             <p>Salary: {jobPosting.salary}</p>
             <p>Date: {jobPosting.date}</p>
-            <p style={{ fontSize: '18px', fontWeight: 'bold', color: 'red', textAlign: 'center', padding: '10px' }}>
-              To apply, please send your application to the following email: <a href={`mailto:${jobPosting.contact.email}`} style={{ color: 'blue' }}>{jobPosting.contact.email}</a>
+            <p
+              style={{
+                fontSize: "18px",
+                fontWeight: "bold",
+                color: "red",
+                textAlign: "center",
+                padding: "10px",
+              }}
+            >
+              To apply, please send your application to the following email:{" "}
+              <a
+                href={`mailto:${jobPosting.contact.email}`}
+                style={{ color: "blue" }}
+              >
+                {jobPosting.contact.email}
+              </a>
             </p>
             <hr />
             <h3>Description:</h3>
             <p>{jobPosting.description}</p>
             <h3>Qualifications:</h3>
-            <p>{jobPosting.qualifications || "No specific qualifications required. Please check the job description for more details."}</p>
+            <p>
+              {jobPosting.qualifications && jobPosting.qualifications.length > 0
+                ? jobPosting.qualifications.join(", ")
+                : "High School"}
+            </p>
+
             <h3>Contact:</h3>
             <p>Name: {jobPosting.contact.name}</p>
             <p>Email: {jobPosting.contact.email}</p>

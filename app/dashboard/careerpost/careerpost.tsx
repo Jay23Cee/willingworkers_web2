@@ -105,22 +105,24 @@ const [contactPhone, setContactPhone] = useState<string>("(323)937-5950");
     customId?: string
   ): void => {
     const { name, checked } = event.target;
-    const qualification = customId || name;
-
-    if (checked) {
-      setJobPosting((prevState) => ({
+    const qualification = customId || name.trim(); // Trim any extra spaces
+  
+    setJobPosting((prevState) => {
+      const newQualifications = checked
+        ? [...prevState.qualifications, qualification]
+        : prevState.qualifications.filter((q) => q !== qualification);
+  
+      // Remove duplicates
+      const uniqueQualifications = Array.from(new Set(newQualifications));
+  
+      return {
         ...prevState,
-        qualifications: [...prevState.qualifications, qualification],
-      }));
-    } else {
-      setJobPosting((prevState) => ({
-        ...prevState,
-        qualifications: prevState.qualifications.filter(
-          (q) => q !== qualification
-        ),
-      }));
-    }
+        qualifications: uniqueQualifications,
+      };
+    });
   };
+  
+  
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -304,138 +306,110 @@ const [contactPhone, setContactPhone] = useState<string>("(323)937-5950");
   <p>{jobPosting.description.length}/500 characters</p>
 </div>
 
-            <div className="form-group qualification">
-              <label htmlFor="qualifications">Qualifications:</label>
-              <ul>
-                <li>
-                  <input
-                    type="checkbox"
-                    id="high_school_diploma"
-                    name="High School Diploma"
-                    checked={jobPosting.qualifications.includes(
-                      "High School Diploma "
-                    )}
-                    onChange={handleQualificationsChange}
-                  />
-                  <label htmlFor="high_school_diploma">
-                    High School Diploma
-                  </label>
-                </li>
-                <li>
-                  <input
-                    type="checkbox"
-                    id="some_college"
-                    name="Some College"
-                    checked={jobPosting.qualifications.includes("Some College ")}
-                    onChange={handleQualificationsChange}
-                  />
-                  <label htmlFor="some_college">Some College</label>
-                </li>
-                <li>
-                  <input
-                    type="checkbox"
-                    id="bachelor_degree"
-                    name="Bachelor's Degree"
-                    checked={jobPosting.qualifications.includes(
-                      "Bachelor's Degree "
-                    )}
-                    onChange={handleQualificationsChange}
-                  />
-                  <label htmlFor="bachelor_degree">Bachelor's Degree</label>
-                </li>
-                {customQualifications.map((customQualification) => {
-                  if (customQualification.isSaved) {
-                    return (
-                      <li key={customQualification.id}>
-                        <input
-                          type="checkbox"
-                          id={customQualification.id}
-                          name={customQualification.text}
-                          checked={jobPosting.qualifications.includes(
-                            customQualification.id
-                          )}
-                          onChange={(event) =>
-                            handleQualificationsChange(
-                              event,
-                              customQualification.id
-                            )
-                          }
-                        />
-                        <label htmlFor={customQualification.id}>
-                          {customQualification.text}
-                        </label>
-                        <button
-                          type="button"
-                          className="delete"
-                          onClick={() =>
-                            handleDeleteCustomQualification(
-                              customQualification.id
-                            )
-                          }
-                        >
-                          X
-                        </button>
-                      </li>
-                    );
-                  } else {
-                    return (
-                      <li key={customQualification.id}>
-                        <div>
-                          <input
-                            type="checkbox"
-                            id={customQualification.id}
-                            name={customQualification.text}
-                            checked={jobPosting.qualifications.includes(
-                              customQualification.id
-                            )}
-                            onChange={(event) =>
-                              handleQualificationsChange(
-                                event,
-                                customQualification.id
-                              )
-                            }
-                          />
-                          <input
-                            type="text"
-                            onChange={(event) =>
-                              handleCustomQualificationChange(
-                                event,
-                                customQualification.id
-                              )
-                            }
-                          />
-                          <button
-                            type="button"
-                            className="checkbox-newcustomButton save"
-                            onClick={() =>
-                              handleSaveCustomQualification(
-                                customQualification.id
-                              )
-                            }
-                          >
-                            Save
-                          </button>
-                          <button
-                            type="button"
-                            className="checkbox-newcustomButton delete"
-                            onClick={() =>
-                              handleDeleteCustomQualification(
-                                customQualification.id
-                              )
-                            }
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </li>
-                    );
-                  }
-                })}
-              </ul>
-              <button type="button" onClick={addCustomQualification}>
-                Add More +
+<div className="form-group qualification">
+  <label htmlFor="qualifications">Qualifications:</label>
+  <ul>
+    <li>
+      <input
+        type="checkbox"
+        id="high_school_diploma"
+        name="High School Diploma"
+        checked={jobPosting.qualifications.includes("High School Diploma")}
+        onChange={handleQualificationsChange}
+      />
+      <label htmlFor="high_school_diploma">High School Diploma</label>
+    </li>
+    <li>
+      <input
+        type="checkbox"
+        id="some_college"
+        name="Some College"
+        checked={jobPosting.qualifications.includes("Some College")}
+        onChange={handleQualificationsChange}
+      />
+      <label htmlFor="some_college">Some College</label>
+    </li>
+    <li>
+      <input
+        type="checkbox"
+        id="bachelor_degree"
+        name="Bachelor's Degree"
+        checked={jobPosting.qualifications.includes("Bachelor's Degree")}
+        onChange={handleQualificationsChange}
+      />
+      <label htmlFor="bachelor_degree">Bachelor's Degree</label>
+    </li>
+    {customQualifications.map((customQualification) => {
+      if (customQualification.isSaved) {
+        return (
+          <li key={customQualification.id}>
+            <input
+              type="checkbox"
+              id={customQualification.id}
+              name={customQualification.text.trim()}
+              checked={jobPosting.qualifications.includes(customQualification.id)}
+              onChange={(event) =>
+                handleQualificationsChange(event, customQualification.id)
+              }
+            />
+            <label htmlFor={customQualification.id}>{customQualification.text}</label>
+            <button
+              type="button"
+              className="delete"
+              onClick={() => handleDeleteCustomQualification(customQualification.id)}
+            >
+              X
+            </button>
+          </li>
+        );
+      } else {
+        return (
+          <li key={customQualification.id}>
+            <div>
+              <input
+                type="checkbox"
+                id={customQualification.id}
+                name={customQualification.text.trim()}
+                checked={jobPosting.qualifications.includes(customQualification.id)}
+                onChange={(event) =>
+                  handleQualificationsChange(event, customQualification.id)
+                }
+              />
+              <input
+                type="text"
+                onChange={(event) =>
+                  handleCustomQualificationChange(event, customQualification.id)
+                }
+              />
+              <button
+                type="button"
+                className="checkbox-newcustomButton save"
+                onClick={() =>
+                  handleSaveCustomQualification(customQualification.id)
+                }
+              >
+                Save
+              </button>
+              <button
+                type="button"
+                className="checkbox-newcustomButton delete"
+                onClick={() =>
+                  handleDeleteCustomQualification(customQualification.id)
+                }
+              >
+                Delete
               </button>
             </div>
+          </li>
+        );
+      }
+    })}
+  </ul>
+  <button type="button" onClick={addCustomQualification}>
+    Add More +
+  </button>
+</div>
+
 
             <div className="form-group">
               <label htmlFor="name">Contact Name:</label>

@@ -41,7 +41,8 @@ export default function JobPostingEditor({
   const [jobPosting, setJobPosting] = useState<JobPosting>(() => ({
     ...prop,
     date: prop.date || now.toISOString().substr(0, 10),
-    expirationDate: prop.expirationDate || expirationDate.toISOString().substr(0, 10),
+    expirationDate:
+      prop.expirationDate || expirationDate.toISOString().substr(0, 10),
     qualifications: prop.qualifications || [],
     contact: prop.contact || {
       name: "",
@@ -72,7 +73,7 @@ export default function JobPostingEditor({
         },
       }));
     } else {
-      console.log(name,"||\n", value)
+      console.log(name, "||\n", value);
       setJobPosting((prevState) => ({
         ...prevState,
         [name]: value,
@@ -84,18 +85,23 @@ export default function JobPostingEditor({
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
     const { name, checked } = event.target;
-    if (checked) {
-      setJobPosting((prevState) => ({
+    const qualification = name.trim(); // Trim any extra spaces
+  
+    setJobPosting((prevState) => {
+      const newQualifications = checked
+        ? [...prevState.qualifications, qualification]
+        : prevState.qualifications.filter((q) => q !== qualification);
+  
+      // Remove duplicates
+      const uniqueQualifications = Array.from(new Set(newQualifications));
+  
+      return {
         ...prevState,
-        qualifications: [...prevState.qualifications, name],
-      }));
-    } else {
-      setJobPosting((prevState) => ({
-        ...prevState,
-        qualifications: prevState.qualifications.filter((q) => q !== name),
-      }));
-    }
+        qualifications: uniqueQualifications,
+      };
+    });
   };
+  
 
   const handleSalaryChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -108,7 +114,9 @@ export default function JobPostingEditor({
     }));
   };
 
-  const handleSalaryBlur = (event: React.FocusEvent<HTMLInputElement>): void => {
+  const handleSalaryBlur = (
+    event: React.FocusEvent<HTMLInputElement>
+  ): void => {
     const { value } = event.target;
     const formattedSalary = value ? parseFloat(value).toFixed(2) : "";
     setJobPosting((prevState) => ({
@@ -125,12 +133,11 @@ export default function JobPostingEditor({
       const response = await axios.post("/api/editPost", jobPosting);
       if (response.status === 200) {
         toast.success("Edit has been saved");
-    
-        setTimeout(() => {
-            window.alert("The page will now refresh");
-            window.location.reload();
-        }, 2000); // 2000 milliseconds = 2 seconds
 
+        setTimeout(() => {
+          window.alert("The page will now refresh");
+          window.location.reload();
+        }, 2000); // 2000 milliseconds = 2 seconds
       } else {
         toast.error("Error saving");
         throw new Error("Error creating job post");
@@ -224,46 +231,41 @@ export default function JobPostingEditor({
             </div>
 
             <div className="form-group qualification">
-              <label>Qualifications:</label>
-              <ul>
-                <li>
-                  <input
-                    type="checkbox"
-                    id="high_school_diploma"
-                    name="High School Diploma"
-                    checked={jobPosting.qualifications.includes(
-                      "High School Diploma "
-                    )}
-                    onChange={handleQualificationsChange}
-                  />
-                  <label htmlFor="high_school_diploma">
-                    High School Diploma
-                  </label>
-                </li>
-                <li>
-                  <input
-                    type="checkbox"
-                    id="some_college"
-                    name="Some College"
-                    checked={jobPosting.qualifications.includes("Some College ")}
-                    onChange={handleQualificationsChange}
-                  />
-                  <label htmlFor="some_college">Some College</label>
-                </li>
-                <li>
-                  <input
-                    type="checkbox"
-                    id="bachelor_degree"
-                    name="Bachelor's Degree"
-                    checked={jobPosting.qualifications.includes(
-                      "Bachelor's Degree "
-                    )}
-                    onChange={handleQualificationsChange}
-                  />
-                  <label htmlFor="bachelor_degree">Bachelor's Degree</label>
-                </li>
-              </ul>
-            </div>
+  <label>Qualifications:</label>
+  <ul>
+    <li>
+      <input
+        type="checkbox"
+        id="high_school_diploma"
+        name="High School Diploma"
+        checked={jobPosting.qualifications.includes("High School Diploma")}
+        onChange={handleQualificationsChange}
+      />
+      <label htmlFor="high_school_diploma">High School Diploma</label>
+    </li>
+    <li>
+      <input
+        type="checkbox"
+        id="some_college"
+        name="Some College"
+        checked={jobPosting.qualifications.includes("Some College")}
+        onChange={handleQualificationsChange}
+      />
+      <label htmlFor="some_college">Some College</label>
+    </li>
+    <li>
+      <input
+        type="checkbox"
+        id="bachelor_degree"
+        name="Bachelor's Degree"
+        checked={jobPosting.qualifications.includes("Bachelor's Degree")}
+        onChange={handleQualificationsChange}
+      />
+      <label htmlFor="bachelor_degree">Bachelor's Degree</label>
+    </li>
+  </ul>
+</div>
+
 
             <div className="form-group">
               <label htmlFor="name">Contact Name:</label>
