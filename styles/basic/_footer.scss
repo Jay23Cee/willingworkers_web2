@@ -1,6 +1,4 @@
-
 @import '../basic/colors';
-
 
 .Footer {
   width: 100vw;
@@ -13,6 +11,7 @@
   justify-content: center;
   align-items: center;
   word-wrap: break-word;
+  
   a {
     color: $color-light-gray;
 
@@ -20,37 +19,45 @@
       color: blue;
     }
   }
+
   h4 {
     overflow: hidden;
   }
-  h1{
-    font-family: myfont;
-    font-size: 3.5em;
-   
-    color: $color-deep-blue;
- 
-  
-    text-shadow: 3px 0 white, 0 2px white, 2px 0 white, 0 -2px white;   
+
+  h1 {
+    font-size: 2.5em;
+    color: white !important;
+  }
+
+  // Social media icons container
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 20px; // Adjust this value as needed
+  }
+
+  // Image styling for responsiveness
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 60px; // Adjust this value as needed
   }
 
   // Mobile styles (screen width less than 768px)
   @media (max-width: 767px) {
-    // Make the font size smaller and the spacing tighter on small screens
     font-size: 0.95em;
-
-    // Stack the elements vertically
     flex-direction: column;
+
+    .social-icons img {
+      max-width: 50px; // Adjust this value for mobile
+    }
   }
 
   // Tablet and desktop styles (screen width greater than or equal to 768px)
   @media (min-width: 768px) {
-    // Increase the font size and spacing on larger screens
     font-size: 1em;
-
-    // Align the elements horizontally
     flex-direction: row;
-    
-    // Use flexbox to distribute the space evenly among the elements
+
     > * {
       flex: 1;
       text-align: center;

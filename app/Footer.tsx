@@ -15,7 +15,7 @@ export const Footer = () => {
             <div className="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
               <h1 className="text-uppercase fw-bold mb-4">
                 <i className="me-3 fas fa-gem" />
-                Willing Workers
+                OVS Willing Workers
               </h1>
             </div>
 
@@ -39,30 +39,32 @@ export const Footer = () => {
                   target="_blank"
                 >
                   4813 W. Washington Blvd.<br></br>
-                  Los Angeles , Los Angeles 90016
+                  Los Angeles, Los Angeles 90016
                 </a>
               </p>
               <p>
                 <i className="me-4 fas fa-envelope" />
                 info@willingworkers.com
               </p>
-    
-    <a href="https://www.facebook.com/profile.php?id=100087648068663">
-              <Image
-          src={fb}
-          alt="fb logo"
-          width={60}
-          height={60}
-        /> </a>
 
-          <a href="https://www.instagram.com/ovswillingworkers?fbclid=IwAR3UzOrEDw1CSp5CQgLaNnw4L3BZIo0d6R1fAVx6zNjtd8UJalzIuVAB_7A_aem_AUF2YT7kIZ1j-D3u8vCY56v1YcSatNZx_JqXhSoScmX1ROF_0iMCR67L5b30GjngChuHTt8hOuXeu00WV7NR3S9k">
-               <Image
-          src={instagram}
-          alt="fb logo"
-          width={60}
-          height={60}
-        />
-           </a>    
+              <div className="social-icons">
+                <a href="https://www.facebook.com/profile.php?id=100087648068663">
+                  <Image
+                    src={fb}
+                    alt="fb logo"
+                    width={60}
+                    height={60}
+                  />
+                </a>
+                <a href="https://www.instagram.com/ovswillingworkers?fbclid=IwAR3UzOrEDw1CSp5CQgLaNnw4L3BZIo0d6R1fAVx6zNjtd8UJalzIuVAB_7A_aem_AUF2YT7kIZ1j-D3u8vCY56v1YcSatNZx_JqXhSoScmX1ROF_0iMCR67L5b30GjngChuHTt8hOuXeu00WV7NR3S9k">
+                  <Image
+                    src={instagram}
+                    alt="insta logo"
+                    width={60}
+                    height={60}
+                  />
+                </a>
+              </div>
             </div>
           </div>
         </div>
