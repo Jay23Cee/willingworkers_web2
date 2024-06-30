@@ -3,229 +3,131 @@
 .career {
   display: flex;
   flex-direction: column;
-  position: absolute;
+  position: relative; // Changed from absolute to relative
   width: 100%;
   justify-content: center;
   align-items: center;
-  background:$color-soft-blue;
-  color:$color-deep-blue;
+  background: $color-soft-blue;
+  color: $color-deep-blue;
 
-  h1{
+  h1 {
     color: $color-deep-blue;
-    text-shadow: 30 30 45px $color-vibrant-blue 40 40 45px $color-vibrant-blue, ;
-
-   // text-shadow: 0 0 45px $color-vibrant-blue 0 0 45px $color-vibrant-blue, 0 0 45px $color-vibrant-blue, 0 0 54px $color-soft-blue, 0 0 54px $color-vibrant-blue, 0 0 5px  $color-vibrant-blue, 0 0 54px  $color-vibrant-blue, 0 0 54px  $color-vibrant-blue;
-    
+    text-shadow: 0 0 45px $color-vibrant-blue, 0 0 45px $color-vibrant-blue;
   }
-  &-text {
 
+  &-text {
     text-align: center;
-    margin:2px;
-    padding:40px;
-    width:40%;
-    h5{
+    margin: 2px;
+    padding: 20px; // Adjusted padding for better mobile view
+    width: 80%; // Changed from 40% to 80% for better mobile view
+
+    h5 {
       overflow: hidden;
       padding-bottom: 20px;
     }
-    h3 {
-      font-size: 0.9em;
-      color:$color-deep-blue;
-      text-shadow: 0 0 5px #ffffff, 0 0 5px #f1f1f1, 0 0 2px #FFF, 0 0 2px $color-vibrant-blue, 0 0 2px $color-vibrant-blue, 0 0 3px $color-vibrant-blue, 0 0 2px $color-vibrant-blue, 0 0 2px $color-vibrant-blue;
 
+    h3 {
+      font-size: 1.1em; // Adjusted font size
+      color: $color-deep-blue;
+      text-shadow: 0 0 5px #ffffff, 0 0 5px #f1f1f1, 0 0 2px #fff, 0 0 2px $color-vibrant-blue, 0 0 2px $color-vibrant-blue, 0 0 3px $color-vibrant-blue, 0 0 2px $color-vibrant-blue, 0 0 2px $color-vibrant-blue;
     }
   }
 
   &-banner {
     margin-top: 4rem;
-    padding: 5rem;
+    padding: 2rem; // Adjusted padding for better mobile view
     background-color: #0000ff;
     color: white;
   }
 
   @media screen and (max-width: 768px) {
-    flex-direction: column;
-    margin-top: 0;
-
-
     &-text {
-      width: 60vw;
-    
+      width: 90%; // Adjusted width for better mobile view
+      padding: 10px; // Adjusted padding for better mobile view
+    }
+
+    &-banner {
+      padding: 1rem; // Adjusted padding for better mobile view
     }
   }
 }
 
-@media screen and (max-width: 768px) {
-  .career-text{
-    padding:0;
-  }
-  
-  }
 .career-container-banner {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background: url("../../public/assets/sunset2.jpg") no-repeat center;  background-size: cover !important;
-
+  background: url("../../public/assets/sunset2.jpg") no-repeat center;
+  background-size: cover !important;
   width: 100%;
- height: 200px;
+  height: 200px;
   justify-content: center;
 
   h1 {
     font-family: myFont;
     color: $color-vibrant-blue;
-    text-stroke: 2px white;
-    text-shadow: -3px 0 rgb(255, 255, 255), 0 3px white, 3px 0 white,
-      0 -3px white;
-    font-size: 6.5rem;
+    -webkit-text-stroke: 2px white; // Corrected property
+    text-shadow: -3px 0 white, 0 3px white, 3px 0 white, 0 -3px white;
+    font-size: 2.5rem; // Adjusted font size for better mobile view
     margin-top: 20px;
-    line-height: 1em;
+    line-height: 1.2em; // Adjusted line height for better readability
     overflow: hidden;
     width: 100% !important;
   }
 }
 
 .career-jobpost-container {
-  
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  // overflow-y: scroll;
   background: linear-gradient(180deg, $color-soft-blue 0%, $color-light-gray 100%);
   color: black;
-  
 
   .job-posting {
     word-wrap: break-word;
-    max-width: 55vw;
-    width: 55%; /* adjust this value as needed */
-    margin: 10px;
-    padding: 40px;
-    Button{
-      width:40%;
-      background:$color-vibrant-blue;
-      cursor: pointer;
-      :hover{
-        background:red;
-        
-      }
-      }
-  }
+    max-width: 80vw; // Adjusted max-width for better mobile view
+    padding: 20px; // Adjusted padding for better mobile view
+    background: $color-light-gray;
+    border: 2px dotted;
 
-  @media screen and (max-width: 768px) {
-    .job-posting {
-      width: 80%;
+    a {
+      color: blue; // Ensure link color stands out
+    }
+
+    p {
+      font-size: 0.9em; // Adjusted font size for better readability on mobile
+    }
+
+    @media screen and (max-width: 768px) {
+      width: 90%; // Adjusted width for better mobile view
+      padding: 10px; // Adjusted padding for better mobile view
     }
   }
 }
 
-
-
-.job-posting {
-  /* Default styles */
-  width: 100%;
-  height: auto;
-  margin:10px;
-  padding:40px;
-  background:$color-light-gray;
-  border: 2px dotted;
-  /* Styles for mobile screens */
-  @media only screen and (min-width: 320px) {
-    width: 100%;
-    height: auto;
-  }
-
-  /* Styles for tablet screens */
-  @media only screen and (min-width: 768px) {
-    width: 50%;
-    height: 400px;
-  }
-
-  /* Styles for laptop screens */
-  @media only screen and (min-width: 1024px) {
-    width: 33.33%;
-    height: 400px;
-  }
-
-  /* Styles for desktop screens */
-  @media only screen and (min-width: 1200px) {
-    width: 25%;
-    height: 400px;
-  }
-}
-
-
 .no-job-posting {
-  /* Default styles */
   width: 100%;
-  height: auto;
-  margin:10px;
-  padding:40px;
-  background:rgba(128, 128, 128, 0.121);
+  margin: 10px;
+  padding: 20px; // Adjusted padding for better mobile view
+  background: rgba(128, 128, 128, 0.121);
   border: 2px dotted;
-  display:flex;
-  text-wrap: balance;
-
-  justify-content: center; 
+  display: flex;
+  justify-content: center;
   align-items: center;
-  /* Styles for mobile screens */
-  @media only screen and (min-width: 320px) {
-    width: 100%;
-    height: auto;
+  text-align: center; // Ensure text is centered
+
+  @media screen and (max-width: 768px) {
+    width: 90%; // Adjusted width for better mobile view
   }
-
-  /* Styles for tablet screens */
-  @media only screen and (min-width: 768px) {
-    width: 50%;
-    height: 400px;
-
-  }
-
-  /* Styles for laptop screens */
-  @media only screen and (min-width: 1024px) {
-    width: 75%;
-    height: 400px;
-  }
-
-  // /* Styles for desktop screens */
-  // @media only screen and (min-width: 1200px) {
-  //  width: 75%;
-  //   height: 400px;
-  // }
 }
-
-
-// .job-application-form{
-//   width:500px;
-// background:$color-light-gray;
-// background: linear-gradient(180deg, $color-light-gray 97%,$color-vibrant-blue 2%, );
-
-// margin:30px 0px 30px 0;
-//   @media only screen and (max-width: 425px) {
-//     width: 80vw;
-//     height: auto;
-//   }
-// }
-
 
 .Career-holder {
-  background: $color-light-gray;
-  background: linear-gradient(180deg, $color-soft-blue 0%,$color-deep-blue 93%, $color-deep-blue 100%, rgba(0,0,0,1) 100%);
+  background: linear-gradient(180deg, $color-soft-blue 0%, $color-deep-blue 93%, $color-deep-blue 100%, rgba(0,0,0,1) 100%);
   width: 100%;
-  /* padding: 0 20%; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-
-
-// .application-jobpost{
-//   padding: 20px 0;
-//   display: flex;
-//     flex-direction: column;
-//     justify-content: center;
-//     align-items: center;
-// }
