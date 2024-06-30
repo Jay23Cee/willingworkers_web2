@@ -313,7 +313,7 @@ const [contactPhone, setContactPhone] = useState<string>("(323)937-5950");
                     id="high_school_diploma"
                     name="High School Diploma"
                     checked={jobPosting.qualifications.includes(
-                      "High School Diploma"
+                      "High School Diploma "
                     )}
                     onChange={handleQualificationsChange}
                   />
@@ -326,7 +326,7 @@ const [contactPhone, setContactPhone] = useState<string>("(323)937-5950");
                     type="checkbox"
                     id="some_college"
                     name="Some College"
-                    checked={jobPosting.qualifications.includes("Some College")}
+                    checked={jobPosting.qualifications.includes("Some College ")}
                     onChange={handleQualificationsChange}
                   />
                   <label htmlFor="some_college">Some College</label>
@@ -337,7 +337,7 @@ const [contactPhone, setContactPhone] = useState<string>("(323)937-5950");
                     id="bachelor_degree"
                     name="Bachelor's Degree"
                     checked={jobPosting.qualifications.includes(
-                      "Bachelor's Degree"
+                      "Bachelor's Degree "
                     )}
                     onChange={handleQualificationsChange}
                   />

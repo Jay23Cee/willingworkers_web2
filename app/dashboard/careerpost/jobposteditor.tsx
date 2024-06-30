@@ -232,7 +232,7 @@ export default function JobPostingEditor({
                     id="high_school_diploma"
                     name="High School Diploma"
                     checked={jobPosting.qualifications.includes(
-                      "High School Diploma"
+                      "High School Diploma "
                     )}
                     onChange={handleQualificationsChange}
                   />
@@ -245,7 +245,7 @@ export default function JobPostingEditor({
                     type="checkbox"
                     id="some_college"
                     name="Some College"
-                    checked={jobPosting.qualifications.includes("Some College")}
+                    checked={jobPosting.qualifications.includes("Some College ")}
                     onChange={handleQualificationsChange}
                   />
                   <label htmlFor="some_college">Some College</label>
@@ -256,7 +256,7 @@ export default function JobPostingEditor({
                     id="bachelor_degree"
                     name="Bachelor's Degree"
                     checked={jobPosting.qualifications.includes(
-                      "Bachelor's Degree"
+                      "Bachelor's Degree "
                     )}
                     onChange={handleQualificationsChange}
                   />
