@@ -54,9 +54,7 @@ function Nav({ image, banner = "" }: User) {
             priority
           />
         </Link>
-        <Link href="/">
-          <p className="company-name">OVS Willing Workers</p>
-        </Link>
+
       </div>
 
   <div className="nav_menu" ref={navMenuRef}>
