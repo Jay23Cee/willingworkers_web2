@@ -3,7 +3,7 @@
 .career {
   display: flex;
   flex-direction: column;
-  position: relative; // Changed from absolute to relative
+  position: relative;
   width: 100%;
   justify-content: center;
   align-items: center;
@@ -18,8 +18,8 @@
   &-text {
     text-align: center;
     margin: 2px;
-    padding: 20px; // Adjusted padding for better mobile view
-    width: 80%; // Changed from 40% to 80% for better mobile view
+    padding: 20px;
+    width: 80%;
 
     h5 {
       overflow: hidden;
@@ -27,7 +27,7 @@
     }
 
     h3 {
-      font-size: 1.1em; // Adjusted font size
+      font-size: 1.1em;
       color: $color-deep-blue;
       text-shadow: 0 0 5px #ffffff, 0 0 5px #f1f1f1, 0 0 2px #fff, 0 0 2px $color-vibrant-blue, 0 0 2px $color-vibrant-blue, 0 0 3px $color-vibrant-blue, 0 0 2px $color-vibrant-blue, 0 0 2px $color-vibrant-blue;
     }
@@ -35,19 +35,19 @@
 
   &-banner {
     margin-top: 4rem;
-    padding: 2rem; // Adjusted padding for better mobile view
+    padding: 2rem;
     background-color: #0000ff;
     color: white;
   }
 
   @media screen and (max-width: 768px) {
     &-text {
-      width: 90%; // Adjusted width for better mobile view
-      padding: 10px; // Adjusted padding for better mobile view
+      width: 90%;
+      padding: 10px;
     }
 
     &-banner {
-      padding: 1rem; // Adjusted padding for better mobile view
+      padding: 1rem;
     }
   }
 }
@@ -66,11 +66,11 @@
   h1 {
     font-family: myFont;
     color: $color-vibrant-blue;
-    -webkit-text-stroke: 2px white; // Corrected property
+    -webkit-text-stroke: 2px white;
     text-shadow: -3px 0 white, 0 3px white, 3px 0 white, 0 -3px white;
-    font-size: 2.5rem; // Adjusted font size for better mobile view
+    font-size: 2.5rem;
     margin-top: 20px;
-    line-height: 1.2em; // Adjusted line height for better readability
+    line-height: 1.2em;
     overflow: hidden;
     width: 100% !important;
   }
@@ -84,26 +84,26 @@
   overflow: hidden;
   background: linear-gradient(180deg, $color-soft-blue 0%, $color-light-gray 100%);
   color: black;
-  
+
   .job-posting {
     word-wrap: break-word;
-    max-width: 80vw; // Adjusted max-width for better mobile view
-    padding: 20px; // Adjusted padding for better mobile view
-    margin:10px;
+    max-width: 80vw;
+    padding: 20px;
+    margin: 10px;
     background: $color-light-gray;
     border: 2px dotted;
 
     a {
-      color: blue; // Ensure link color stands out
+      color: blue;
     }
 
     p {
-      font-size: 0.9em; // Adjusted font size for better readability on mobile
+      font-size: 0.9em;
     }
 
     @media screen and (max-width: 768px) {
-      width: 90%; // Adjusted width for better mobile view
-      padding: 10px; // Adjusted padding for better mobile view
+      width: 90%;
+      padding: 10px;
     }
   }
 }
@@ -111,16 +111,16 @@
 .no-job-posting {
   width: 100%;
   margin: 10px;
-  padding: 20px; // Adjusted padding for better mobile view
+  padding: 20px;
   background: rgba(128, 128, 128, 0.121);
   border: 2px dotted;
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center; // Ensure text is centered
+  text-align: center;
 
   @media screen and (max-width: 768px) {
-    width: 90%; // Adjusted width for better mobile view
+    width: 90%;
   }
 }
 
@@ -131,4 +131,14 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.loading-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: $color-deep-blue;
+  text-align: center;
+  padding: 20px;
+  margin: 20px;
+  height:250px;
 }

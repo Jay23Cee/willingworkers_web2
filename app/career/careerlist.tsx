@@ -27,6 +27,7 @@ function CareerList() {
   const [selectedJobPosting, setSelectedJobPosting] = useState<JobPosting>();
 
   const [error, setError] = useState("");
+  const [loadingText, setLoadingText] = useState("Loading");
 
   useEffect(() => {
     let isMounted = true;
@@ -60,6 +61,17 @@ function CareerList() {
       isMounted = false;
     };
   }, [jobListPostings, dispatch]);
+
+  useEffect(() => {
+    const loadingTexts = ["Loading", "Loading .", "Loading ..", "Loading ..."];
+    let index = 0;
+    const interval = setInterval(() => {
+      index = (index + 1) % loadingTexts.length;
+      setLoadingText(loadingTexts[index]);
+    }, 500); // Change text every 500ms
+
+    return () => clearInterval(interval);
+  }, []);
 
   const applyToJobPosting = (isApplying: boolean, jobPosting?: JobPosting) => {
     if (isApplying) {
@@ -109,7 +121,7 @@ function CareerList() {
         </div>
         <div className="Career-holder">
           {isLoading ? (
-            <div>Loading...</div>
+            <div className="loading-text">{loadingText}</div>
           ) : isApplying ? (
             <Application
               jobPosting={selectedJobPosting as JobPosting}
