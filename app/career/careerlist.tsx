@@ -22,7 +22,7 @@ function CareerList() {
   const [jobListPostings, setJobListPostings] = useState<JobPosting[]>(
     JobPostings_list.length > 0 ? (JobPostings_list as JobPosting[]) : []
   );
-  const [isLoading, setIsLoading] = useState(jobListPostings.length > 0);
+  const [isLoading, setIsLoading] = useState(jobListPostings.length === 0); // Initialize based on jobListPostings
   const [isApplying, setIsApplying] = useState(false);
   const [selectedJobPosting, setSelectedJobPosting] = useState<JobPosting>();
 
@@ -30,7 +30,7 @@ function CareerList() {
 
   useEffect(() => {
     let isMounted = true;
-    
+
     // Set isLoading to true initially
     setIsLoading(true);
     async function fetchData() {
@@ -38,6 +38,7 @@ function CareerList() {
         const data = await getJobPostings();
         if (data && isMounted) {
           setJobListPostings(data as JobPosting[]);
+          dispatch(setJobPosting(data as JobPosting[]));
         }
       } catch (error) {
         setError('Error fetching job postings');
@@ -51,15 +52,14 @@ function CareerList() {
 
     if (!jobListPostings.length) {
       fetchData();
+    } else {
+      setIsLoading(false); // If there are job postings, no need to fetch and set loading to false
     }
 
     return () => {
       isMounted = false;
     };
-  }, []);
-
-
-  dispatch(setJobPosting(jobListPostings as JobPosting[]));
+  }, [jobListPostings, dispatch]);
 
   const applyToJobPosting = (isApplying: boolean, jobPosting?: JobPosting) => {
     if (isApplying) {
@@ -82,7 +82,7 @@ function CareerList() {
 
         <div className="career-text">
           <h1>Join our team today</h1>
-          <h5 style={{}}>
+          <h5>
             At Willing Workers, we are always looking for dedicated individuals
             to join our team. We offer competitive salaries, comprehensive
             benefits, and opportunities for growth and advancement. Come visit
@@ -108,21 +108,20 @@ function CareerList() {
           <h3>Email: info@willingworkers.org</h3>
         </div>
         <div className="Career-holder">
-        {isLoading ? (
-          // This is where the loading animation will be displayed
-          <div>Loading...</div> // You can replace this with a spinner or a progress bar
-        ) : isApplying ? (
-          <Application
-            jobPosting={selectedJobPosting as JobPosting}
-            applyToJobPosting={applyToJobPosting}
-          />
-        ) : (
-          <DisplayJobList
-            jobListPostings={jobListPostings}
-            applyToJobPosting={applyToJobPosting}
-          />
-        )}
-      </div>
+          {isLoading ? (
+            <div>Loading...</div>
+          ) : isApplying ? (
+            <Application
+              jobPosting={selectedJobPosting as JobPosting}
+              applyToJobPosting={applyToJobPosting}
+            />
+          ) : (
+            <DisplayJobList
+              jobListPostings={jobListPostings}
+              applyToJobPosting={applyToJobPosting}
+            />
+          )}
+        </div>
         <Footer />
       </div>
     </>
