@@ -84,11 +84,12 @@
   overflow: hidden;
   background: linear-gradient(180deg, $color-soft-blue 0%, $color-light-gray 100%);
   color: black;
-
+  
   .job-posting {
     word-wrap: break-word;
     max-width: 80vw; // Adjusted max-width for better mobile view
     padding: 20px; // Adjusted padding for better mobile view
+    margin:10px;
     background: $color-light-gray;
     border: 2px dotted;
 
