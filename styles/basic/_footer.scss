@@ -2,7 +2,7 @@
 
 .Footer {
   width: 100vw;
-  height: 100%;
+  height: auto; // Changed to auto to fit the content
   background-color: $color-deep-blue;
   z-index: 12;
   color: white !important;
@@ -11,6 +11,7 @@
   justify-content: center;
   align-items: center;
   word-wrap: break-word;
+  padding: 20px; // Added padding for better spacing
   
   a {
     color: $color-light-gray;
@@ -20,47 +21,111 @@
     }
   }
 
-  h4 {
-    overflow: hidden;
+  h1 {
+    font-size: 1.25rem; // Adjusted font size for h1
+    color: white !important;
   }
 
-  h1 {
-    font-size: 2.5em;
+  h3 {
+    font-size: 1rem; // Adjusted font size for h3
     color: white !important;
+  }
+
+  p {
+    font-size: 0.875rem; // Adjusted font size for p
   }
 
   // Social media icons container
   .social-icons {
     display: flex;
     justify-content: center;
-    gap: 20px; // Adjust this value as needed
+    gap: 10px; // Adjusted gap
+    margin-top: 20px; // Added margin for better spacing
   }
 
   // Image styling for responsiveness
   img {
-    width: 100%;
+    width: 40px; // Adjusted width for images
     height: auto;
-    max-width: 60px; // Adjust this value as needed
   }
 
-  // Mobile styles (screen width less than 768px)
-  @media (max-width: 767px) {
-    font-size: 0.95em;
+  // Mobile styles (screen width less than 576px)
+  @media (max-width: 575px) {
     flex-direction: column;
+    text-align: center;
+    
+    h1 {
+      font-size: 1rem; // Adjust font size for mobile
+    }
+    
+    h3 {
+      font-size: 0.875rem; // Adjust font size for mobile
+    }
+    
+    p {
+      font-size: 0.75rem; // Adjust font size for mobile
+    }
 
     .social-icons img {
-      max-width: 50px; // Adjust this value for mobile
+      width: 30px; // Adjust image size for mobile
     }
   }
 
-  // Tablet and desktop styles (screen width greater than or equal to 768px)
-  @media (min-width: 768px) {
-    font-size: 1em;
-    flex-direction: row;
+  // Tablet styles (screen width between 576px and 767px)
+  @media (min-width: 576px) and (max-width: 767px) {
+    flex-direction: column;
+    text-align: center;
+    
+    h1 {
+      font-size: 1.125rem; // Adjust font size for tablet
+    }
+    
+    h3 {
+      font-size: 0.9375rem; // Adjust font size for tablet
+    }
+    
+    p {
+      font-size: 0.8125rem; // Adjust font size for tablet
+    }
 
-    > * {
-      flex: 1;
-      text-align: center;
+    .social-icons img {
+      width: 35px; // Adjust image size for tablet
+    }
+  }
+
+  // Desktop styles (screen width greater than or equal to 768px)
+  @media (min-width: 768px) {
+    font-size: 1rem;
+    flex-direction: row;
+    text-align: left;
+    padding: 20px 50px; // Added padding for desktop
+
+    .col-md-3,
+    .col-lg-4,
+    .col-xl-3 {
+      text-align: center; // Ensure left alignment for columns on desktop
+    }
+
+    .social-icons-container {
+      display: flex;
+      justify-content: center; // Center the icons container
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 1.25rem; // Adjust font size for desktop
+    }
+    
+    h3 {
+      font-size: 1rem; // Adjust font size for desktop
+    }
+    
+    p {
+      font-size: 0.875rem; // Adjust font size for desktop
+    }
+
+    .social-icons img {
+      width: 40px; // Adjust image size for desktop
     }
   }
 }
