@@ -1,94 +1,18 @@
-/* Reset default margin and padding */
 * {
   margin: 0;
   padding: 0;
-  caret-color: transparent;
 }
 
-/* Global settings for the body */
 body {
-  font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 1.5em;
-  background: rgb(214, 213, 213);
 }
 
-/* Font size adjustments for different screen sizes */
-@media only screen and (max-width: 768px) {
-  body {
-    font-size: 16px;
-  }
-}
-
-@media only screen and (min-width: 769px) and (max-width: 1024px) {
-  body {
-    font-size: 16px;
-  }
-}
-
-@media only screen and (min-width: 1025px) {
-  body {
-    font-size: 18px;
-  }
-}
-
-/* Code block styling */
 code {
-  font-family: 'Roboto Mono', monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-/* Specific class targeting for Gmap component */
-.Gmap * {
-  overflow: visible;
-}
-
-/* Container styling */
 .container {
   margin: 0;
   padding: 0;
-}
-
-/* App component styling */
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-/* App-logo animation */
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-/* App-header styling */
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: rgb(255, 255, 255);
-}
-
-/* App-link styling */
-.App-link {
-  color: #61dafb;
-}
-
-/* App-logo-spin animation keyframes */
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }

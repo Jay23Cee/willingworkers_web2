@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import "../../styles/global.scss";
 import { UploadOutlined, UserOutlined } from "@ant-design/icons";
 import { Layout, Menu, theme } from "antd";
@@ -60,14 +60,32 @@ export default function DashboardMenu() {
   const [selectedOption, setSelectedOption] = useState("submenu-main-menu");
   const userContentRef = useRef(null);
   const jobPostingContentRef = useRef(null);
+  const currentUser = useMemo(
+    () => ({
+      id: user?.id ?? "",
+      image: user?.image ?? "",
+      name: user?.name ?? "",
+      role: user?.role ?? "",
+      email: user?.email ?? "",
+    }),
+    [user?.email, user?.id, user?.image, user?.name, user?.role]
+  );
 
   useEffect(() => {
     let isMounted = true;
 
     async function fetchUser() {
-      const valid = await getAuthRedux(user);
+      const valid = await getAuthRedux(currentUser);
       if (valid && isMounted) {
-        dispatch(setReduxUser(valid as User));
+        const nextUser = valid as User;
+        if (
+          nextUser.email !== currentUser.email ||
+          nextUser.role !== currentUser.role ||
+          nextUser.name !== currentUser.name ||
+          nextUser.image !== currentUser.image
+        ) {
+          dispatch(setReduxUser(nextUser));
+        }
       }
     }
 
@@ -76,7 +94,7 @@ export default function DashboardMenu() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [currentUser, dispatch]);
 
   useEffect(() => {
     let isMounted = true;

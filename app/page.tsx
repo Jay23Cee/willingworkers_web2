@@ -1,318 +1,199 @@
 "use client";
-import w2 from "../public/assets/w2.jpg";
-import w3 from "../public/assets/w3.jpg";
-import w4 from "../public/assets/w4.jpg";
-import w1 from "../public/assets/welcome.jpg";
-import { CSSProperties, useEffect, useState } from "react";
-import "../styles/global.scss";
-import { Bus, CoachIcon, HandsIcon } from "../public/assets/page";
+
+import Image, { StaticImageData } from "next/image";
+import Link from "next/link";
+import { useEffect, useState, type ComponentType, type SVGProps } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
-
-
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-import getConfig from "next/config";
+import { Bus, CoachIcon, HandsIcon } from "../public/assets/page";
+import homeSlide1 from "../public/assets/professional/home/hero-slide-1.webp";
+import homeSlide2 from "../public/assets/professional/home/hero-slide-2.webp";
+import homeSlide3 from "../public/assets/professional/home/hero-slide-3.webp";
+import homeSlide4 from "../public/assets/professional/home/hero-slide-4.webp";
+import promoAbout from "../public/assets/professional/home/promo-about.webp";
+import promoPrograms from "../public/assets/professional/home/promo-programs.webp";
+import missionImage from "../public/assets/professional/home/mission.webp";
+import quoteImage from "../public/assets/professional/home/community-quote.webp";
+import PrimaryCtaBar from "./components/PrimaryCtaBar";
+import SectionIntro from "./components/SectionIntro";
 import { Footer } from "./Footer";
 import Nav from "./Nav";
 
-const Home = () => {
-  const [busRef, busInView] = useInView({ threshold: 0.0 });
-  const [coachRef, coachInView] = useInView({ threshold: 0.0 });
-  const [handsRef, handsInView] = useInView({ threshold: 0.0 });
-  const [isBusVisible, setIsBusVisible] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const [isBusLoaded, setIsBusLoaded] = useState(false);
-  const [isCoachLoaded, setIsCoachLoaded] = useState(false);
-  const [isHandsLoaded, setIsHandsLoaded] = useState(false);
+type HighlightCard = {
+  title: string;
+  description: string;
+  Icon: ComponentType<SVGProps<SVGSVGElement>>;
+};
 
-  useEffect(() => {
-    if (handsInView) {
-      setIsHandsLoaded(true);
-    }
-  }, [handsInView]);
+const heroSlides: StaticImageData[] = [
+  homeSlide1,
+  homeSlide2,
+  homeSlide3,
+  homeSlide4,
+];
 
-  useEffect(() => {
-    if (coachInView) {
-      setIsCoachLoaded(true);
-    }
-  }, [coachInView]);
+const highlightCards: HighlightCard[] = [
+  {
+    title: "Private Transportation",
+    description:
+      "Reliable weekday transportation helps participants arrive safely and stay connected to daily routines.",
+    Icon: Bus,
+  },
+  {
+    title: "Community Integration",
+    description:
+      "Guided experiences build confidence, social awareness, and practical skills for independent living.",
+    Icon: CoachIcon,
+  },
+  {
+    title: "Social Recreation",
+    description:
+      "Purposeful activities encourage creativity, friendships, and healthy habits in a supportive environment.",
+    Icon: HandsIcon,
+  },
+];
 
-  useEffect(() => {
-    if (busInView) {
-      setIsBusVisible(true);
-    }
-  }, [busInView]);
-
-  let navigate = useRouter();
-  const routeProgramChange = (path: any) => {
-    navigate.push(path);
-  };
-  // Declare a state variable to keep track of the current slide
+export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Declare a list of images to be displayed in the slide show
-  const images = [w1, w2, w3, w4];
-
-  const [isImagesLoaded, setIsImagesLoaded] = useState(false);
-
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prevSlide) => (prevSlide + 1) % images.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [currentSlide]);
+    const interval = window.setInterval(() => {
+      setCurrentSlide((previousSlide) => (previousSlide + 1) % heroSlides.length);
+    }, 6500);
+
+    return () => window.clearInterval(interval);
+  }, []);
 
   return (
-    <div>
-      <Nav image={""} banner={"Home"} />
-      <div className="home-container">
-        <div className="overlay mt-4 p-5 bg-primary text-white">
+    <div className="home-page">
+      <Nav currentPage="home" showPrimaryCta primaryCtaHref="/programs" primaryCtaLabel="Explore Programs" />
+
+      <main className="home-main">
+        <section className="home-hero">
           <AnimatePresence initial={false}>
             <motion.div
               key={currentSlide}
+              className="home-hero__slide"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-              }}
+              transition={{ duration: 1.1, ease: "easeOut" }}
             >
               <Image
-                src={images[currentSlide].src}
-                priority={true}
-                fill={true}
-                alt={""}
+                src={heroSlides[currentSlide]}
+                alt=""
+                fill
+                priority={currentSlide === 0}
+                className="home-hero__image"
+                sizes="100vw"
               />
             </motion.div>
           </AnimatePresence>
 
-          <div className="home-intro"></div>
-
-          <h1>Willing Workers</h1>
-          <p>
-            Empowering individuals with intellectual and developmental
-            disabilities to reach their full potential
-          </p>
-
-          <button
-            onClick={() => {
-              routeProgramChange("/about");
-            }}
-          >
-            Learn More
-          </button>
-        </div>
-
-        <div className="banner">
-          <div className="banner-two .hover-zoom">
-            <button>
-              <a
-                onClick={() => {
-                  routeProgramChange("/programs");
-                }}
-              >
-                <div className="program-banner ">
-                  <h3>Programs</h3>
-
-                  <p>
-                    learn more about our programs and the valuable resources
-                    that they provide
-                  </p>
-                </div>
-              </a>
-            </button>
-          </div>
-
-          <div className="banner-one .hover-zoom">
-            <button>
-              <a
-                className="banner-button"
-                onClick={() => {
-                  routeProgramChange("/about");
-                }}
-              >
-                <div className="donate-banner ">
-                  <h3>About Us</h3>
-                  <p>Get to know what we are all about</p>
-                </div>
-              </a>
-            </button>
-          </div>
-        </div>
-
-        <div className="programs">
-          <div className="Programs-item bus-info" ref={busRef}>
-            <AnimatePresence initial={false}>
-              {busInView && (
-                <motion.div
-                  key="bus-animation"
-                  initial={{ opacity: 0, x: 100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                >
-                  <div className="bus">
-                    <Bus
-                      className="bus-icon"
-                      width={"150px"}
-                      height={"150px"}
-                      fill="blue"
-                      onLoad={() => setIsBusLoaded(true)}
-                    />
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            <h3>PRIVATE TRANSPORTATION</h3>
+          <div className="home-hero__overlay" aria-hidden="true" />
+          <div className="home-hero__content section-shell">
+            <p className="home-hero__eyebrow">Inclusive Adult Day Program</p>
+            <h1>Helping adults build independence, confidence, and community.</h1>
             <p>
-              We provide private transportation services to our clients at our
-              adult regional center. Our reliable drivers are available
-              Monday-Friday to transport clients to and from the center and
-              other locations. Our service is designed to make getting around
-              easy and stress-free for our clients.{" "}
+              Willing Workers partners with families and participants to deliver
+              practical support, meaningful activities, and a safe daily
+              environment.
             </p>
-            <button
-              onClick={() => {
-                routeProgramChange("/programs");
-              }}
-            >
-              Find out more
-            </button>
-          </div>
-          <div className="Programs-item coach-info" ref={coachRef}>
-            <AnimatePresence initial={false}>
-              {!coachInView && (
-                <motion.div
-                  key="coach-placeholder"
-                  initial={{ opacity: 0, x: 100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                >
-                  <CoachIcon
-                    className="coach-icon coach-placeholder"
-                    width={"150px"}
-                    height={"150px"}
-                    fill="blue"
-                  />
-                </motion.div>
-              )}
-              {coachInView && (
-                <motion.div
-                  key="coach-animation"
-                  initial={{ opacity: 0, x: 100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                >
-                  <div className="coach">
-                    <CoachIcon
-                      className="coach-icon"
-                      width={"150px"}
-                      height={"150px"}
-                      fill="blue"
-                      onLoad={() => setIsCoachLoaded(true)}
-                    />
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-            <h3>COMMUNITY INTEGRATION PROGRAM</h3>
-            <p>
-              Our community integration program promotes diversity, equality,
-              and inclusion and provides resources and support for clients to
-              learn about different lifestyles and advocate for themselves. The
-              program helps clients lead independent lives within their
-              communities.
-            </p>
-            <button
-              onClick={() => {
-                routeProgramChange("/programs");
-              }}
-            >
-              Find out more
-            </button>
-          </div>
-
-          <div className="Programs-item hands-info" ref={handsRef}>
-            <AnimatePresence initial={false}>
-              {handsInView && (
-                <motion.div
-                  key="hands-animation"
-                  initial={{ opacity: 0, x: 100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                >
-                  <div className="hands">
-                    <HandsIcon
-                      className="hands-icon"
-                      width={"150px"}
-                      height={"150px"}
-                      fill="blue"
-                      onLoad={() => setIsHandsLoaded(true)}
-                    />
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-            <h3>SOCIAL RECREATION PROGRAM</h3>
-            <p>
-              Our social recreation program enhances the lives of adults with
-              developmental disabilities through recreational and social
-              activities such as arts and crafts, music, and other creative
-              pursuits. Our program provides a supportive environment for
-              individuals to engage in activities that promote well-being. It
-              helps individuals lead fulfilling and enriching lives
-            </p>
-            <button
-              onClick={() => {
-                routeProgramChange("/programs");
-              }}
-            >
-              Find out more
-            </button>
-          </div>
-        </div>
-
-        <div className="sop-info">
-          <div className="sop .col-md-">
-            <div className="sop-wrap">
-              <div className="sop-img " />
-              <div className="sop-statement .col-md-">
-                <p className="sop-statement-title">Willing Workers</p>
-                <p className="sop-statement-text">
-                  Our <br></br>Mission
-                </p>
-              </div>
-            </div>
-            <div className="sop-quote .col-md-">
-              <p>
-                At Willing Workers, our mission is to assist and support
-                individuals with intellectual and developmental disabilities by
-                promoting independence, self-advocacy, and overall well-being
-                through community integration training and the development of
-                healthy habits. We strive to improve the quality of life for the
-                individuals we serve by focusing on areas such as safety,
-                personal health and hygiene, nutrition, physical fitness, and
-                emergency preparedness. We believe in the inherent worth and
-                potential of every individual and are committed to helping them
-                lead fulfilling and independent lives. Our goal is to empower
-                them to reach their full potential and become active members of
-                their communities.
-              </p>
+            <div className="home-hero__actions">
+              <Link href="/programs" className="btn-primary">
+                Explore Programs
+              </Link>
+              <Link href="/about" className="btn-secondary">
+                Learn About Our Mission
+              </Link>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div className="last-quote">
-          {/* <img src={Smileimg} alt="" className="src" /> */}
-          <h4>Dedicated to making a difference in our community.</h4>
-        </div>
+        <section className="home-promo-grid section-shell">
+          <Link href="/programs" className="home-promo-card">
+            <Image src={promoPrograms} alt="" fill sizes="(max-width: 900px) 100vw, 50vw" />
+            <span className="home-promo-card__overlay" aria-hidden="true" />
+            <div className="home-promo-card__content">
+              <h2>Programs Built Around Real Needs</h2>
+              <p>See how daily programming supports growth, routine, and self-advocacy.</p>
+            </div>
+          </Link>
 
-        <Footer />
-      </div>
+          <Link href="/about" className="home-promo-card">
+            <Image src={promoAbout} alt="" fill sizes="(max-width: 900px) 100vw, 50vw" />
+            <span className="home-promo-card__overlay" aria-hidden="true" />
+            <div className="home-promo-card__content">
+              <h2>Meet the Team Behind the Care</h2>
+              <p>Learn how our staff creates a respectful and dependable support experience.</p>
+            </div>
+          </Link>
+        </section>
+
+        <section className="home-highlights section-shell">
+          <SectionIntro
+            eyebrow="What We Provide"
+            title="Services that support long-term independence"
+            description="Our programs combine structured training, community engagement, and wellness support so each participant can thrive at their own pace."
+            centered
+          />
+
+          <div className="home-highlight-grid">
+            {highlightCards.map(({ title, description, Icon }) => (
+              <article key={title} className="home-highlight-card">
+                <div className="home-highlight-card__icon" aria-hidden="true">
+                  <Icon width={74} height={74} />
+                </div>
+                <h3>{title}</h3>
+                <p>{description}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="home-mission section-shell">
+          <div className="home-mission__media">
+            <Image
+              src={missionImage}
+              alt="Program staff and participants working together in a group session"
+              fill
+              sizes="(max-width: 980px) 100vw, 48vw"
+            />
+          </div>
+          <article className="home-mission__content">
+            <h2>Our mission is simple and consistent.</h2>
+            <p>
+              We assist adults with intellectual and developmental disabilities by
+              strengthening life skills, encouraging self-advocacy, and promoting
+              healthy routines.
+            </p>
+            <p>
+              Every service is designed to increase safety, dignity, and
+              participation in community life.
+            </p>
+            <Link href="/about" className="btn-secondary">
+              Read Full Mission
+            </Link>
+          </article>
+        </section>
+
+        <PrimaryCtaBar
+          title="Ready to find the right program?"
+          description="Contact our team to discuss goals, availability, and the best next step for your family."
+          ctaLabel="Schedule a Tour"
+          ctaHref="/contact"
+        />
+
+        <section className="home-community-quote">
+          <Image src={quoteImage} alt="" fill sizes="100vw" className="home-community-quote__image" />
+          <div className="home-community-quote__overlay" aria-hidden="true" />
+          <blockquote>
+            Dedicated to creating meaningful opportunities for growth, dignity,
+            and belonging in our community.
+          </blockquote>
+        </section>
+      </main>
+
+      <Footer />
     </div>
   );
-};
-
-export default Home;
+}

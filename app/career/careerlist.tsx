@@ -1,130 +1,150 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
-import "../../styles/global.scss";
-import { Footer } from "../Footer";
-import { JobPosting } from "../components/jobpost";
-import Nav from "../Nav";
-import getJobPostings from "../api/getJobPostings";
 import { useDispatch, useSelector } from "react-redux";
+import careerHero from "../../public/assets/professional/career/hero.webp";
+import getJobPostings from "../api/getJobPostings";
+import PageHero from "../components/PageHero";
+import { JobPosting } from "../components/jobpost";
+import PrimaryCtaBar from "../components/PrimaryCtaBar";
 import { setJobPosting } from "../redux/reducer/jobPostingsSlice";
-import { AppState } from "../redux/store/store";
-import DisplayJobList from "./displayjoblist";
+import { Footer } from "../Footer";
+import Nav from "../Nav";
 import Application from "./[...career]/application";
+import DisplayJobList from "./displayjoblist";
 
-function CareerList() {
+const directionUrl =
+  "https://www.google.com/maps/dir/?api=1&destination=" +
+  encodeURI("4813 W. Washington Blvd., Los Angeles, CA 90016");
+
+export default function CareerList() {
   const dispatch = useDispatch();
-
-  const JobPostings_list = useSelector((state: any) => {
-    return state.jobPostings.jobPostings;
-  });
+  const storedJobPostings = useSelector(
+    (state: any) => state.jobPostings.jobPostings as JobPosting[]
+  );
 
   const [jobListPostings, setJobListPostings] = useState<JobPosting[]>(
-    JobPostings_list.length > 0 ? (JobPostings_list as JobPosting[]) : []
+    storedJobPostings.length > 0 ? storedJobPostings : []
   );
-  const [isLoading, setIsLoading] = useState(jobListPostings.length === 0); // Initialize based on jobListPostings
+  const [isLoading, setIsLoading] = useState(storedJobPostings.length === 0);
   const [isApplying, setIsApplying] = useState(false);
-  const [selectedJobPosting, setSelectedJobPosting] = useState<JobPosting>();
-
-  const [error, setError] = useState("");
+  const [selectedJobPosting, setSelectedJobPosting] = useState<JobPosting | null>(null);
   const [loadingText, setLoadingText] = useState("Loading");
+
+  useEffect(() => {
+    if (storedJobPostings.length > 0) {
+      setJobListPostings(storedJobPostings);
+      setIsLoading(false);
+    }
+  }, [storedJobPostings]);
 
   useEffect(() => {
     let isMounted = true;
 
-    // Set isLoading to true initially
-    setIsLoading(true);
     async function fetchData() {
       try {
         const data = await getJobPostings();
         if (data && isMounted) {
-          setJobListPostings(data as JobPosting[]);
-          dispatch(setJobPosting(data as JobPosting[]));
+          const postings = data as JobPosting[];
+          setJobListPostings(postings);
+          dispatch(setJobPosting(postings));
         }
       } catch (error) {
-        setError('Error fetching job postings');
+        console.error("Error fetching job postings", error);
       } finally {
-        // Set isLoading to false once data is fetched
         if (isMounted) {
           setIsLoading(false);
         }
       }
     }
 
-    if (!jobListPostings.length) {
+    if (storedJobPostings.length === 0) {
       fetchData();
-    } else {
-      setIsLoading(false); // If there are job postings, no need to fetch and set loading to false
     }
 
     return () => {
       isMounted = false;
     };
-  }, [jobListPostings, dispatch]);
+  }, [dispatch, storedJobPostings.length]);
 
   useEffect(() => {
+    if (!isLoading) {
+      return;
+    }
+
     const loadingTexts = ["Loading", "Loading .", "Loading ..", "Loading ..."];
     let index = 0;
-    const interval = setInterval(() => {
+    const interval = window.setInterval(() => {
       index = (index + 1) % loadingTexts.length;
       setLoadingText(loadingTexts[index]);
-    }, 500); // Change text every 500ms
+    }, 500);
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => window.clearInterval(interval);
+  }, [isLoading]);
 
-  const applyToJobPosting = (isApplying: boolean, jobPosting?: JobPosting) => {
-    if (isApplying) {
-      setIsApplying(isApplying);
+  const applyToJobPosting = (applying: boolean, jobPosting?: JobPosting) => {
+    if (applying && jobPosting) {
       setSelectedJobPosting(jobPosting);
+      setIsApplying(true);
+      return;
     }
-    setIsApplying(isApplying);
+
+    setIsApplying(false);
+    setSelectedJobPosting(null);
   };
 
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
-
   return (
-    <>
-      <Nav image={""} banner={""} />
-      <div className="career">
-        <div className="career-container-banner mt-4 p-5 bg-primary text-white">
-          <h1>Career</h1>
-          <p></p>
-        </div>
+    <div className="career-page">
+      <Nav currentPage="career" showPrimaryCta primaryCtaHref="/programs" primaryCtaLabel="Explore Programs" />
 
-        <div className="career-text">
-          <h1>Join our team today</h1>
-          <h5>
-            At Willing Workers, we are always looking for dedicated individuals
-            to join our team. We offer competitive salaries, comprehensive
-            benefits, and opportunities for growth and advancement. Come visit
-            us for a tour to see what we're all about and start your career with
-            us today!
-          </h5>
-          <h3>
-            {" "}
-            <a
-              href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURI(
-                "4813 W. Washington Blvd., Los Angeles, Los Angeles 90016"
-              )}`}
-              target="_blank"
-            >
-              4813 W. Washington Blvd.<br></br>
-              Los Angeles, CA 90016
-            </a>
-          </h3>
-          <h3>Monday - Friday 8:00am - 3:00pm</h3>
-          <h3>
-            Phone:<a href="tel:323-729-9898">323-729-9898</a>
-          </h3>
-          <h3>Email: info@willingworkers.org</h3>
-        </div>
-        <div className="Career-holder">
+      <main>
+        <PageHero
+          title="Careers"
+          subtitle="Join a mission-driven team committed to respectful, high-quality support for adults with developmental disabilities."
+          imageSrc={careerHero}
+          ctaLabel="Explore Programs"
+          ctaHref="/programs"
+          minHeight="sm"
+          overlayStrength="medium"
+        />
+
+        <section className="career-intro section-shell">
+          <article>
+            <h2>Build your career with purpose</h2>
+            <p>
+              We are always looking for dependable and compassionate team
+              members who want to make a daily difference.
+            </p>
+            <p>
+              Learn more in person at our center or send your application for an
+              open role below.
+            </p>
+          </article>
+
+          <article className="career-intro__details">
+            <h3>Location and Hours</h3>
+            <p>
+              <Link href={directionUrl} target="_blank" rel="noreferrer">
+                4813 W. Washington Blvd., Los Angeles, CA 90016
+              </Link>
+            </p>
+            <p>Monday - Friday, 8:00am - 3:00pm</p>
+            <p>
+              Phone: <a href="tel:3239375950">(323) 937-5950</a>
+            </p>
+            <p>
+              Email: <a href="mailto:info@willingworkers.org">info@willingworkers.org</a>
+            </p>
+          </article>
+        </section>
+
+        <section className="career-jobs section-shell">
           {isLoading ? (
             <div className="loading-text">{loadingText}</div>
-          ) : isApplying ? (
+          ) : isApplying && selectedJobPosting ? (
             <Application
-              jobPosting={selectedJobPosting as JobPosting}
+              jobPosting={selectedJobPosting}
               applyToJobPosting={applyToJobPosting}
             />
           ) : (
@@ -133,11 +153,17 @@ function CareerList() {
               applyToJobPosting={applyToJobPosting}
             />
           )}
-        </div>
-        <Footer />
-      </div>
-    </>
+        </section>
+
+        <PrimaryCtaBar
+          title="Need help deciding if a role is the right fit?"
+          description="Reach out and our team can walk you through responsibilities and hiring steps."
+          ctaLabel="Contact Us"
+          ctaHref="/contact"
+        />
+      </main>
+
+      <Footer />
+    </div>
   );
 }
-
-export default CareerList;

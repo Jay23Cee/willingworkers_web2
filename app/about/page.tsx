@@ -1,114 +1,121 @@
 "use client";
 
-import React, { useEffect } from "react";
-import {
-  GoogleMap,
-  InfoWindow,
-  LoadScript,
-  MarkerF,
-} from "@react-google-maps/api";
-import "../../styles/global.scss";
-// import styled from "styled-components";
-import naturewalk from "../../public/assets/nature_walk.jpg";
-import helpingHands from "../../public/assets/hands.jpg";
-
 import Image from "next/image";
+import Link from "next/link";
+import aboutHero from "../../public/assets/professional/about/hero.webp";
+import missionImage from "../../public/assets/professional/about/mission.webp";
+import valuesImage from "../../public/assets/professional/about/values.webp";
+import PrimaryCtaBar from "../components/PrimaryCtaBar";
+import PageHero from "../components/PageHero";
+import SectionIntro from "../components/SectionIntro";
 import { Footer } from "../Footer";
 import Nav from "../Nav";
-// import { Footer } from "./Footer";
 
-function About() {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+const directionUrl =
+  "https://www.google.com/maps/dir/?api=1&destination=" +
+  encodeURI("4813 W. Washington Blvd., Los Angeles, CA 90016");
 
+export default function About() {
   return (
-    <div>
-      <Nav image={""} banner={""} />
+    <div className="about-page">
+      <Nav currentPage="about" showPrimaryCta primaryCtaHref="/programs" primaryCtaLabel="Explore Programs" />
 
-      <div className="about-container">
-        <div className="about-container-banner mt-4 p-5 bg-primary text-white">
-          <h1>About Us</h1>
-          <p>The best people in the service of helping individuals</p>
-        </div>
+      <main>
+        <PageHero
+          title="About Us"
+          subtitle="A trusted team focused on dignity, practical support, and inclusive community outcomes."
+          imageSrc={aboutHero}
+          ctaLabel="Explore Programs"
+          ctaHref="/programs"
+          minHeight="sm"
+          overlayStrength="medium"
+        />
 
-        <div className="about-container-text">
-          <div className="about-container-text-details">
-            <div className="about-container-text-details-description">
-              <div className="about-ourmission">
-                <figure>
-                  <Image
-                    src={helpingHands}
-                    alt="A group of people participating in an outdoor activity"
-                    sizes="100vw"
-                  />
-                </figure>
+        <section className="about-section section-shell">
+          <SectionIntro
+            eyebrow="Who We Are"
+            title="Committed to reliable, person-centered support"
+            description="Willing Workers partners with participants and families to create stable daily routines, practical life-skill development, and stronger community belonging."
+            centered
+          />
 
-                <p>
-                  <h1>"Our Mission"</h1>
-                  Willing Workers is dedicated to the empowerment of people who have intellectual and 
-                  developmental disabilities so that they may lead productive and self-reliant lives. 
-                  By means of all-encompassing community integration initiatives and the promotion of health-conscious behaviors, 
-                  we advocate for autonomy, self-determination, and holistic health. We improve quality of life 
-                  by addressing safety, personal health, nutrition, physical fitness, and emergency preparedness. 
-                  We are dedicated to helping people achieve their goals and become valued members of their communities.
-                </p>
-              </div>
-              <div className="about-container-text-values-image">
-                <div className="about-container-text-values ">
-                  <h1>"Our Values"</h1>
-                  <p>
-                  We base everything that we do at Willing Workers on our core values. 
-                  Our conduct and choices are guided by a set of guiding principles that are rooted in compassion, 
-                  dignity, diversity, excellence, and honesty. Cultivating an atmosphere that promotes 
-                  development and empowerment, we place the requirements and aspirations of every individual 
-                  we assist as our top priority. With active engagement with families and the wider community, 
-                  inclusivity is not merely an objective but a fundamental component of our methodology. 
-                  Maintaining a commitment to excellence and transparency in every aspect of our operations is 
-                  of the utmost importance to us. The dedication we have to these principles serves as the 
-                  foundation of our work, driving us towards our objective of assisting and enabling the 
-                  individuals we assist.
+          <div className="about-story-grid">
+            <article className="about-story-card">
+              <h2>Our Mission</h2>
+              <p>
+                We empower adults with intellectual and developmental
+                disabilities to build independent, self-directed lives through
+                community integration, healthy habits, and structured support.
+              </p>
+              <p>
+                Our programs focus on safety, personal wellness, physical
+                activity, emergency readiness, and social confidence so each
+                participant can grow with dignity.
+              </p>
+            </article>
 
-                  </p>
-                </div>
-                <div className="about-container-text-image">
-                  <figure className="about-container-text-details-image">
-                    <Image
-                      src={naturewalk}
-                      alt="A group of people participating in an outdoor activity"
-                      sizes="100vw"
-                    />
-                  </figure>
-                </div>
-              </div>
+            <div className="about-story-media">
+              <Image
+                src={missionImage}
+                alt="Staff member supporting adults in a collaborative training activity"
+                fill
+                sizes="(max-width: 1024px) 100vw, 46vw"
+              />
             </div>
           </div>
-        </div>
-        <div className="about-container-contacts">
-          <h1>Schedule a tour today</h1>
+
+          <div className="about-values-grid">
+            <div className="about-values-media">
+              <Image
+                src={valuesImage}
+                alt="Participants and team members engaged in a welcoming group environment"
+                fill
+                sizes="(max-width: 1024px) 100vw, 46vw"
+              />
+            </div>
+
+            <article className="about-story-card">
+              <h2>Our Values</h2>
+              <p>
+                Compassion, respect, and accountability shape every service we
+                deliver. We value transparency with families, consistency in
+                care, and inclusive participation in every setting.
+              </p>
+              <p>
+                We believe growth happens through partnership. That is why we
+                work closely with participants, caregivers, and the broader
+                community to support long-term success.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section className="about-tour section-shell">
+          <h2>Schedule a tour</h2>
           <p>
-            Willing Workers is currently giving tours following CDC guidelines.
-            Masks are mandatory during your visit.
+            Visit our center to learn more about programs, daily schedules, and
+            enrollment support.
           </p>
-          <br></br>
-          <h5>
-            {" "}
-            4813 W. Washington Blvd.<br></br>
-            Los Angeles , Los Angeles 90016
-          </h5>
-          <br></br>
+          <p>
+            <Link href={directionUrl} target="_blank" rel="noreferrer">
+              4813 W. Washington Blvd., Los Angeles, CA 90016
+            </Link>
+          </p>
+          <p>Monday - Friday, 8:00am - 3:00pm</p>
+          <p>
+            Phone: <a href="tel:3239375950">(323) 937-5950</a>
+          </p>
+        </section>
 
-          <h5>Telephone: (323) 937-5950</h5>
-          <h5>
-            Monday - Friday <br></br> 7am-3pm
-          </h5>
-          <br></br>
-        </div>
+        <PrimaryCtaBar
+          title="Ready to learn more?"
+          description="Our team can help you understand program fit and next steps."
+          ctaLabel="Contact Us"
+          ctaHref="/contact"
+        />
+      </main>
 
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 }
-
-export default About;

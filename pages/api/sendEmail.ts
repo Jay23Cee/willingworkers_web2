@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import formidable from "formidable";
 import { File } from "formidable";
 import prisma from "@/prisma/client";
+import { buildEmailTemplate, resolveJobPostId } from "./_lib/email";
 
 export const config = {
   api: {
@@ -14,13 +15,20 @@ function isFile(obj: any): obj is File {
   return "filepath" in obj && "originalFilename" in obj && "mimetype" in obj;
 }
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default async function sendEmailHandler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method !== "POST") {
     res.status(405).send("Method Not Allowed");
     return;
   }
 
   const sgEmail = process.env.SENDGRID_API_EMAIL as string;
+  if (!sgEmail || !process.env.SENDGRID_API_KEY) {
+    res.status(500).send("Email service not configured.");
+    return;
+  }
   sgMail.setApiKey(process.env.SENDGRID_API_KEY as string);
 
   const form = new formidable.IncomingForm();
@@ -33,12 +41,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         return;
       }
 
-      const { name, email, message, id } = fields;
-      console.log(id)
-      const jobpost = await getJobpost(id as string)
+      const name = Array.isArray(fields.name) ? fields.name[0] ?? "" : fields.name ?? "";
+      const email = Array.isArray(fields.email) ? fields.email[0] ?? "" : fields.email ?? "";
+      const message =
+        Array.isArray(fields.message) ? fields.message[0] ?? "" : fields.message ?? "";
+      const phone = Array.isArray(fields.phone) ? fields.phone[0] ?? "" : fields.phone ?? "";
+      const jobPostId = resolveJobPostId(fields);
+      const jobpost = await getJobpost(jobPostId);
 
-      
-      // Use a type guard to check if 'files.resume' is a 'File'
+      if (!jobpost) {
+        res.status(404).send("Job posting not found.");
+        return;
+      }
+
       const resumeFile = files.resume as File;
       if (!isFile(resumeFile)) {
         console.error("Invalid resume file:", resumeFile);
@@ -51,28 +66,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         .readFileSync(resumeFile.filepath)
         .toString("base64");
 
-      const emailTemplate = `Job Title: 
-Salary: 
-Location:
-
-Contact Information:
-Name: ${name}
-Email: ${email}
-Phone Number: ${fields.phone}
-
-Cover Letter:
-${message}
-
-We kindly request you to review the application and consider the applicant for the position. If you require any additional information or have any questions, please feel free to reach out to the applicant directly using the contact information provided.
-
-Thank you for your time and consideration.
-Best regards,
-[Company Name]`;
+      const emailTemplate = buildEmailTemplate({
+        jobTitle: jobpost.title,
+        salary: jobpost.salary,
+        location: jobpost.location,
+        name,
+        email,
+        phone,
+        message,
+      });
 
       const msg = {
-        to: "jayceexxiii@gmail.com" as string,
-        from: "jacks23.cee@gmail.com" as string,
-        subject: `Job Application for ` as string,
+        to: jobpost.contact?.email || sgEmail,
+        from: sgEmail,
+        subject: `Job Application for ${jobpost.title}`,
         text: emailTemplate,
         attachments: [
           {
@@ -85,8 +92,7 @@ Best regards,
       };
 
       try {
-        console.log(msg)
-     const result = await sgMail.send(msg);
+        await sgMail.send(msg);
         res.status(200).send("Message sent successfully.");
       } catch (error) {
         console.error(error);
@@ -109,6 +115,6 @@ const getJobpost = async (id: string) => {
       contact: true,
     },
   });
-console.log(jobPost, " GET JOB POST FUNC")
+
   return jobPost;
-};
+}

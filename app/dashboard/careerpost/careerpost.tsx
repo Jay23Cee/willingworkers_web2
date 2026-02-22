@@ -6,10 +6,10 @@ import { v4 as uuidv4 } from "uuid";
 import { addJobPost } from "@/app/api/addJobPosting";
 import { toast } from "react-hot-toast";
 import { clearJobPosting } from "@/app/redux/reducer/jobPostingsSlice";
+import { useDispatch } from "react-redux";
 
-export default function CreateJobPost(prop: any) {
+export default function CreateJobPost(_prop: any) {
   const textareaDescription = useRef<HTMLTextAreaElement | null>(null);
-  const pacificTimezone = "en-US";
   const now = new Date();
   const formattedDate = now.toISOString().slice(0, 10);
   const expirationDate = new Date(now);
@@ -17,6 +17,7 @@ export default function CreateJobPost(prop: any) {
   
 
 ; // add 1 month
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (textareaDescription.current) {
@@ -53,10 +54,6 @@ export default function CreateJobPost(prop: any) {
 
   const expirationDateString = expirationDate.toISOString().slice(0, 10); // convert to yyyy-mm-dd format
 
-  const [savedCustomQualifications, setSavedCustomQualifications] = useState<
-    Array<{ id: string; text: string }>
-  >([]);
-
   const [jobPosting, setJobPosting] = useState<JobPosting>(() => ({
     id: "",
     title: "Behavior Coach",
@@ -76,11 +73,6 @@ export default function CreateJobPost(prop: any) {
   const [customQualifications, setCustomQualifications] = useState<
     Array<{ id: string; text: string; isSaved: boolean }>
   >([]);
-  const [isCustomQualificationsSaved, setIsCustomQualificationsSaved] =
-    useState<boolean>(false);
-
-
-const [contactPhone, setContactPhone] = useState<string>("(323)937-5950");
 
   const addCustomQualification = () => {
     setCustomQualifications((prevQualifications) => [
@@ -187,10 +179,6 @@ const [contactPhone, setContactPhone] = useState<string>("(323)937-5950");
       (customQualification) => customQualification.id === id
     );
     if (qualification && qualification.text) {
-      setSavedCustomQualifications((prevQualifications) => [
-        ...prevQualifications,
-        qualification,
-      ]);
       setCustomQualifications((prevQualifications) =>
         prevQualifications.map((customQualification) =>
           customQualification.id === id
@@ -337,7 +325,7 @@ const [contactPhone, setContactPhone] = useState<string>("(323)937-5950");
         checked={jobPosting.qualifications.includes("Bachelor's Degree")}
         onChange={handleQualificationsChange}
       />
-      <label htmlFor="bachelor_degree">Bachelor's Degree</label>
+      <label htmlFor="bachelor_degree">Bachelor&apos;s Degree</label>
     </li>
     {customQualifications.map((customQualification) => {
       if (customQualification.isSaved) {
@@ -451,8 +439,4 @@ const [contactPhone, setContactPhone] = useState<string>("(323)937-5950");
       </div>
     </>
   );
-}
-
-function dispatch(arg0: any) {
-  throw new Error("Function not implemented.");
 }

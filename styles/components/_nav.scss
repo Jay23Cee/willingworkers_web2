@@ -1,183 +1,137 @@
-@import '../basic/colors';
+@use "../basic/colors" as *;
 
-/* Variable Definitions */
-$border-color: $color-deep-blue;
-$menu-color: rgba(136, 255, 0, 0);
-$menu-color2: $color-soft-blue;
-$menu-bg-color: rgba(0, 51, 102, 0.8); // Semi-transparent blue background for mobile
-$color-light-gray: #D3D3D3; // Assuming a light gray color for menu items
-
-/* Global font face definition */
-@font-face {
-    font-family: 'myfont';
-    src: url('../../public/assets/fonts/Merriweather-BoldItalic.ttf');
+.site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 40;
+  background: linear-gradient(180deg, rgba(20, 108, 148, 0.88), rgba(20, 108, 148, 0.52));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(6px);
 }
 
-/* Desktop base styles for navigation bar */
-.nav {
+.site-nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 74px;
+  gap: 1.25rem;
+}
+
+.site-nav__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.site-nav__logo {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.site-nav__brand-text {
+  color: #fff;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.site-nav__menu-button {
+  display: none;
+  width: 42px;
+  height: 42px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 10px;
+  cursor: pointer;
+
+  span {
+    display: block;
+    height: 2px;
+    width: 20px;
+    margin: 5px auto;
+    background: #fff;
+  }
+}
+
+.site-nav__links {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+}
+
+.site-nav__link {
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 999px;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.site-nav__primary-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  color: var(--accent-strong);
+  border-radius: 999px;
+  padding: 0.5rem 0.95rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: transform 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    color: var(--accent);
+  }
+}
+
+.site-nav__user-image {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+@media (max-width: 920px) {
+  .site-nav__brand-text {
+    display: none;
+  }
+
+  .site-nav__menu-button {
+    display: block;
+  }
+
+  .site-nav__links {
     position: absolute;
-    z-index: 10;
-  
+    top: 68px;
+    right: 4vw;
+    width: min(320px, 90vw);
+    background: rgba(20, 108, 148, 0.97);
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 0.7rem;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.2rem;
+    box-shadow: 0 16px 28px rgba(0, 0, 0, 0.22);
+  }
+
+  .site-nav__links--open {
+    display: flex;
+  }
+
+  .site-nav__link,
+  .site-nav__primary-cta {
     width: 100%;
-   
-    background: linear-gradient(to bottom, rgba(61, 61, 61, 0.54), rgba(61, 61, 61, 0));
-
-    display: flex;
-    justify-content: space-between;
-    
-
-    /* Media query for desktop, overriding some properties if necessary */
-    @media only screen and (min-width: 768px) {
-       
-        font-size: 1.2em;
-        font-size: medium;
-        .menu-icon {
-            display: none;
-        }
-    }
-}
-
-/* Desktop menu styles, ensuring it remains as per the old version */
-.menu {
-    list-style: none;
-    display: flex;
-    flex-direction: row;
     justify-content: center;
-    align-items: center;
-    padding: 0;
-    margin: 0;
-    font-weight: 800;
-    font-size: 1.1em;
-    text-shadow:1px 1px 2px rgba(212, 39, 8, 0);
-   
-    li {
-        margin: 20px;
-        transition: transform 0.3s ease; // Add transition for smooth scaling
-        &:hover {
-            color: $menu-color2;
-            transform: scale(1.05); // Slight increase in size
-        }
-        a {
-            position: relative; // Needed for underline animation
-            &::after {
-                content: '';
-                position: absolute;
-                width: 100%;
-                transform: scaleX(0);
-                height: 2px;
-                bottom: -5px;
-                left: 0;
-           
-                transform-origin: bottom right;
-                transition: transform 0.25s ease-out;
-            }
-            &:hover::after {
-                transform: scaleX(1);
-                transform-origin: bottom left;
-            }
-        }
-    }
-    /* Existing styles for a */
-    a {
-        color: $color-light-gray;
-        text-decoration: none;
-        font-size: 1.2em;
-        font-weight: 500;
-        transition: color 0.3s ease; // Ensure this remains for smooth color transition
-     //   background-color: rgba(1, 36, 69, 0.332);
-        border-radius: 40%;
-        padding: 0.5em 1em; // Adjust padding as needed
-        
-        // Add subtle white glow effect
-        text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); // Adjust shadow color and intensity as needed
-        
-        &:hover {
-            color: rgb(250, 37, 0);
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); // Increase shadow intensity on hover
-        }
-    }
-}
-
-/* For mobile menu items, you might adjust or keep these effects minimal due to the different interaction model */
-
-
-/* Mobile-specific styles */
-@media only screen and (max-width: 767px) {
-    .company-name{
-        display: none;
-    }
-    .nav {
-        height: auto;
-
-        .menu-icon {
-            display: block;
-            font-size: 30px;
-            color: #fff;
-            cursor: pointer;
-            position: absolute;
-            right: 10px;
-            top: 10px;
-        }
-    }
-
-    .menu {
-        position: absolute;
-        top: 100%;
-        right: 0;
-        display: none;
-        opacity: 0;
-        list-style: none;
-        visibility: hidden;
-        transform: translateY(-20px);
-        transition: visibility 0s linear 0.5s, opacity 0.5s ease, transform 0.5s ease;
-        background-color: $menu-bg-color;
-        border-radius: 10px;
-        margin-top: 0.5em;
-        z-index: 5;
-        width: 100%;
-        max-width: 300px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-
-        li {
-            margin: 0;
-            color: $color-light-gray;
-            &:hover {
-                background-color: lighten($menu-bg-color, 10%);
-            }
-        }
-
-        a {
-            color: $color-light-gray;
-            text-decoration: none;
-            font-size: large;
-            font-weight: 500;
-            display: block;
-            padding: 0.75em 1em;
-            transition: color 0.3s ease, background-color 0.3s ease;
-
-            &:hover {
-                color: $menu-color2;
-            }
-        }
-    }
-
-    /* Show menu on mobile when triggered */
-    .show-menu {
-        display: block;
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-        transition-delay: 0s;
-        top: 50px; // Adjusted for mobile menu visibility
-    }
-}
-
-/* Assuming global CSS or CSS module import */
-.image-hover-effect {
-    transition: transform 0.3s ease-in-out; /* Smooth transition for the transform */
-    display: inline-block; /* Ensures the transform applies correctly */
-}
-
-.image-hover-effect:hover {
-    transform: scale(1.1) rotate(5deg); /* Slightly enlarges and rotates the image */
+  }
 }

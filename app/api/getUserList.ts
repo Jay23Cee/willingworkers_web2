@@ -1,13 +1,9 @@
 import axios from "axios";
 import { User } from "../components/user";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import prisma from "@/prisma/client";
-import { getServerSession } from "next-auth";
-import { useDispatch } from "react-redux";
 
-export async function getUserList(email: string) {
+export async function getUserList() {
   try {
-    const res = await axios.get("/api/getUserList", { params: { email } });
+    const res = await axios.get("/api/getUserList");
     const userResponse = res.data;
 
     const users: User[] = userResponse.map((userData: any) => {

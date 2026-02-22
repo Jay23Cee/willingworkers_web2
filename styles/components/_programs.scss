@@ -1,126 +1,77 @@
-@import '../basic/colors';
-
-@font-face {
-  font-family: 'myfont';
-  src: url("../../public/assets/fonts/Merriweather-BoldItalic.ttf");
+.programs-section {
+  margin-top: 2rem;
 }
 
-.program-container {
+.programs-grid {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.program-card {
+  height: 100%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
   display: flex;
   flex-direction: column;
-  align-items: center !important;
-  text-align: center !important;
-  justify-content: center !important;
-  background: $color-light-gray;
-  color: $color-vibrant-blue;
-  padding-bottom: 2rem; // Add some padding at the bottom
-
-  .program-description-container {
-    width: 100%;
-    padding: 2rem; // More padding for breathing space
-  }
-
-  .program-description {
-    max-width: 800px; // Max width for readability
-    margin: 0 auto; // Centering
-    padding: 1rem;
-    text-align: center;
-  }
-
-  .program-container-banner {
-    width: 100%;
-    height: 200px;
-    overflow: hidden;
-    position: relative;
-    margin-bottom: 2rem; // Consistent spacing
-    
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    h1 {
-      font-family:myfont;
-      color: $color-deep-blue;
-      //text-stroke: 2px white;
-      text-shadow: -2px 0 white, 0 4px white, 2px 2px white, 0 -2px white;
-      margin-top: 50px;
-      font-size: 6.5rem;
-
-      line-height: 1em;
-      overflow: hidden;
-      width:100% !important;
-      z-index: 1;
-      position: absolute;
-    }
-
-
-  }
 }
 
-.program-list {
+.program-card__image-wrap {
+  position: relative;
   width: 100%;
-  list-style-type: none;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  justify-content: center; // Center items in the grid
-  gap: 1rem; // Spacing between cards
-  align-items: center; // Stretch cards to fill grid
+  aspect-ratio: 16 / 10;
 
-  .program-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center; // Center align the card contents
-    background-color: $color-light-gray;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba($color-deep-blue, 0.1);
-    padding: 1.5rem;
-    transition: transform 0.2s, box-shadow 0.2s; // Transition for hover effect
-
-    &:hover {
-      transform: translateY(-5px); // Lift card on hover
-      box-shadow: 0 12px 24px rgba($color-deep-blue, 0.2);
-    }
-
-    img {
-      width: 100%; // Responsive image width
-      height: auto; // Maintain aspect ratio
-      margin-bottom: 1rem;
-      border-radius: 5px; // Soften the edges
-    }
-
-    h3 {
-      font-size: 1.25rem; // Responsive font size
-      font-weight: bold;
-      color: $color-deep-blue;
-      margin-bottom: 0.5rem;
-    }
-
-    p {
-      font-size: 1rem; // Responsive font size
-      color: darken($color-vibrant-blue, 10%); // Slightly darker for readability
-      margin-bottom: 1rem; // Consistent margin
-    }
+  img {
+    object-fit: cover;
   }
 }
 
-// Responsive breakpoints
-@media (max-width: 768px) {
-  .program-description-container,
-  
-  .program-description {
-    padding: 1rem;
-    top:65px !important;
-  }
-  .program-list {
+.program-card__body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
 
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  h3 {
+    font-size: 1.2rem;
+    min-height: 3.2rem;
   }
 
-  .program-container-banner h1 {
-    font-size: 3rem; // Smaller font size for smaller screens
-  
+  p {
+    color: var(--text-muted);
+    flex-grow: 1;
+  }
+}
+
+.program-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+
+  span {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--accent-strong);
+    background: rgba(25, 167, 206, 0.13);
+    border-radius: 999px;
+    padding: 0.2rem 0.6rem;
+  }
+}
+
+@media (max-width: 1080px) {
+  .programs-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .programs-grid {
+    grid-template-columns: 1fr;
   }
 }

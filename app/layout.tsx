@@ -1,44 +1,23 @@
-import { Provider } from "react-redux";
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import QueryWrapper from "./auth/QueryWrapper";
-import { appStore } from "./redux/store/store";
-import ovsww_logo from "../public/favicon/favicon_io/favicon.ico";
-export const metadata = {
-  title: 'OVS Willing Workers',
-  description: 'OVS Willing Workers is a community-driven organization that provides volunteer opportunities to support local causes and initiatives. Join us today to make a positive impact in your community!',
+import ovswwLogo from "../public/favicon/favicon_io/favicon.ico";
+import "../styles/global.scss";
+
+export const metadata: Metadata = {
+  title: "OVS Willing Workers",
+  description:
+    "OVS Willing Workers provides inclusive programs and support for adults with intellectual and developmental disabilities.",
   icons: {
-    icon: ovsww_logo.src,
+    icon: ovswwLogo.src,
   },
-}
+};
 
-
-
-export default function RootLayout({ children }: { children: any }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <head>
-
-         <link rel="icon" href={ovsww_logo.src} />
-         <meta property="og:title" content="OVS Willing Workers" />
-         <meta property="og:description" content="OVS Willing Workers is a community-driven organization that provides volunteer opportunities to support local causes and initiatives. Join us today to make a positive impact in your community!" />
-
-      </head>
-      {/* <head>{metadata.title}
-    
-      <meta name="description" content="OVS Willing Workers is a community-driven organization that provides volunteer opportunities to support local causes and initiatives. Join us today to make a positive impact in your community!" />
-
-
-        // 
-        <meta property="og:description" content="OVS Willing Workers is a community-driven organization that provides volunteer opportunities to support local causes and initiatives. Join us today to make a positive impact in your community!" />
-        
-        
-      
-      </head> */}
-
       <body>
-        {/* <Provider store={appStore}> */}
         <QueryWrapper>{children}</QueryWrapper>
-        {/*  
-          </Provider> */}
       </body>
     </html>
   );

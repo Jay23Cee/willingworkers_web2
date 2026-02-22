@@ -1,134 +1,76 @@
-@import '../basic//colors';
+.contact-layout {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: minmax(280px, 360px) 1fr;
+  gap: 1rem;
+  align-items: stretch;
+}
 
-.contact {
+.contact-info-card,
+.contact-map-card {
+  background: #fff;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+
+.contact-info-card {
+  padding: 1.3rem;
   display: flex;
   flex-direction: column;
-  position: absolute;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  &-text {
+  gap: 0.7rem;
 
-    text-align: center;
-    margin:2px;
-    padding:40px;
-    width:40%;
-    h5{
-      overflow: hidden;
-      padding-bottom: 20px;
-    }
-    h3 {
-      font-size: 0.9em;
-      color:$color-deep-blue;
-    }
+  p {
+    color: var(--text-muted);
   }
 
-  &-banner {
-    margin-top: 4rem;
-    padding: 5rem;
-    background-color: #0000ff;
-    color: white;
-  }
-
-  @media screen and (max-width: 768px) {
-    flex-direction: column;
-    margin-top: 0;
-
-
-    &-text {
-      width: 60vw;
-    
-    }
+  a {
+    color: var(--accent-strong);
+    text-decoration: underline;
   }
 }
 
-@media screen and (max-width: 768px) {
-  .contact-text{
-    padding:0;
-  }
-  
-  }
-.contact-container-banner {
+.contact-map-card {
+  min-height: 430px;
+  position: relative;
+}
+
+.contact-map-card__popup {
   display: flex;
   flex-direction: column;
+  gap: 0.2rem;
+
+  h3 {
+    font-size: 1rem;
+  }
+
+  a {
+    color: var(--accent-strong);
+    text-decoration: underline;
+  }
+}
+
+.contact-map-card__fallback {
+  min-height: 430px;
+  display: flex;
   align-items: center;
+  justify-content: center;
   text-align: center;
-  background: url("../../public/assets/contact1_1.jpg") no-repeat center;
-  background-size: cover !important;
+  padding: 1rem;
 
-  width: 100%;
- height: 200px;
-  justify-content: center;
-
-  h1 {
-    font-family: myFont;
-    color: $color-deep-blue;
-    text-stroke: 2px white;
-    text-shadow: -3px 0 rgb(255, 255, 255), 0 3px white, 3px 0 white,
-      0 -3px white;
-    font-size: 6.5rem;
-    margin-top: 20px;
-    line-height: 1em;
-    overflow: hidden;
-    width: 100% !important;
+  p {
+    color: var(--text-muted);
   }
 }
 
-.contact-container-information {
-  display: flex;
-  width:100vw;
-  height:100%;
-  flex-direction: column-reverse;
-  align-items: center;
-  padding:20px;
-  background:rgb(177, 178, 184);
-  background: linear-gradient(180deg,$color-light-gray 30%, $color-vibrant-blue 80%);
-  color:$color-vibrant-blue;
-  /* Add these two media queries */
-  @media screen and (min-width: 768px) {
-    flex-direction: row;
-
+@media (max-width: 980px) {
+  .contact-layout {
+    grid-template-columns: 1fr;
   }
 
-  @media screen and (min-width: 1200px) {
-    flex-direction: row;
-  }
-
-  .Gmap {
-
-
-    button{
-      background:$color-vibrant-blue !important;
-    }
-    .LoadScript{
-      margin: top 200px, im !important;;
-    }
-    
-    
- 
-
-    /* Other styles for the map container */
-    overflow: hidden;
-    @media screen and (min-width: 1200px) {
-      width: 800px;
-      height: 600px;
-    }
-
-    @media screen and (min-width: 992px) and (max-width: 1199px) {
-      width: 600px;
-      height: 450px;
-    }
-
-    @media screen and (min-width: 768px) and (max-width: 991px) {
-      width: 400px;
-      height: 300px;
-    }
-
-    @media screen and (max-width: 767px) {
-      width: 80vw;
-      height: 325px;
-    }
+  .contact-map-card,
+  .contact-map-card__fallback {
+    min-height: 360px;
   }
 }
-
-

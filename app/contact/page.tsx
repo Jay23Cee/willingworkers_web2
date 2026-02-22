@@ -1,165 +1,120 @@
 "use client";
 
-import {
-  GoogleMap,
-  InfoWindow,
-  LoadScript,
-  MarkerF,
-  DirectionsRenderer,
-} from "@react-google-maps/api";
-import { useEffect, useState } from "react";
-import "../../styles/global.scss";
-// import { Footer } from "./Footer";
-import dotenv from "dotenv";
+import { GoogleMap, InfoWindow, LoadScript, MarkerF } from "@react-google-maps/api";
+import Link from "next/link";
+import { useState } from "react";
+import contactHero from "../../public/assets/professional/contact/hero.webp";
+import PageHero from "../components/PageHero";
+import PrimaryCtaBar from "../components/PrimaryCtaBar";
 import { Footer } from "../Footer";
 import Nav from "../Nav";
 
-const containerStyle = {
+const mapContainerStyle = {
   width: "100%",
   height: "100%",
-  /* Other styles for the map container */
 };
-const options = {
+
+const mapOptions = {
   disableDefaultUI: true,
-  gestureHandling: "none",
+  zoomControl: true,
 };
 
-function Contact() {
-  // Use useEffect to trigger a resize of the map when the component mounts
-  useEffect(() => {
-    window.dispatchEvent(new Event("resize"));
-  }, []);
+const center = {
+  lat: 34.03987169154813,
+  lng: -118.34399681590634,
+};
 
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
+const directionUrl =
+  "https://www.google.com/maps/dir/?api=1&destination=" +
+  encodeURI("4813 W. Washington Blvd., Los Angeles, CA 90016");
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  const [selectedMarker, setSelectedMarker] = useState<{
-    lat: number;
-    lng: number;
-  } | null>(null);
-  const center = {
-    lat: 34.03987169154813,
-    lng: -118.34399681590634,
-  };
-
-  const Popup_map = {
-    lat: 34.04287169154919,
-    lng: -118.34399681590634,
-  };
-
-  const onLoad = (marker: any) => {};
-
-  var customLabel = {
-    text: "A",
-    color: "#636363",
-    fontSize: "10px",
-    fontWeight: "bold",
-    top: "20px",
-  };
-
-  // Add state variable to store the state of the InfoWindow
+export default function Contact() {
   const [isInfoOpen, setIsInfoOpen] = useState(false);
-
-  // Add a state variable to store the current marker that is clicked
-  const [currentMarker, setCurrentMarker] = useState<{
-    lat: number;
-    lng: number;
-  } | null>(null);
+  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
   return (
-    <>
-      <Nav image={""} banner={""} />
+    <div className="contact-page">
+      <Nav currentPage="contact" showPrimaryCta primaryCtaHref="/programs" primaryCtaLabel="Explore Programs" />
 
-      <div className="contact">
-        <div className="contact-container-banner mt-4 p-5 bg-primary text-white">
-          <h1>Contact Us</h1>
-          <p></p>
-        </div>
+      <main>
+        <PageHero
+          title="Contact Us"
+          subtitle="Schedule a tour, ask about enrollment, or connect with our team for program guidance."
+          imageSrc={contactHero}
+          ctaLabel="Explore Programs"
+          ctaHref="/programs"
+          minHeight="sm"
+          overlayStrength="medium"
+        />
 
-        <div className="contact-container-information">
-          <div className="Gmap" id="map">
-            <LoadScript googleMapsApiKey={apiKey as string}>
-              <GoogleMap
-                mapContainerStyle={containerStyle}
-                center={center}
-                zoom={14}
-                options={options}
-              >
-                {/* Child components, such as markers, info windows, etc. */}
-                <MarkerF
-                  onLoad={onLoad}
-                  position={center}
-                  label={customLabel}
-                  onClick={() => {
-                    // Update the selected marker and open the InfoWindow
-                    setSelectedMarker(center);
-                    setIsInfoOpen(true);
-                    setCurrentMarker(center);
-                  }}
-                ></MarkerF>
-                {isInfoOpen && currentMarker && (
-                  <InfoWindow
-                    position={currentMarker}
-                    onCloseClick={() => {
-                      // Close the InfoWindow and clear the selected marker
-                      setIsInfoOpen(false);
-                      setCurrentMarker(null);
-                    }}
-                    zIndex={10}
-                  >
-                    <div>
-                      <h5>Willing Workers</h5>
-                      <a
-                        href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURI(
-                          "4813 W. Washington Blvd., Los Angeles, Los Angeles 90016"
-                        )}`}
-                        target="_blank"
-                      >
-                        <p>
-                          {" "}
-                          4813 W. Washington Blvd.<br></br>
-                        </p>
-                        <p> Los Angeles , Los Angeles 90016</p>
-                      </a>
-                    </div>
-                  </InfoWindow>
-                )}
-              </GoogleMap>
-            </LoadScript>
+        <section className="contact-layout section-shell">
+          <article className="contact-info-card">
+            <h2>Visit our center</h2>
+            <p>
+              We welcome families and caregivers who want to learn more about
+              our environment, staff, and participant experience.
+            </p>
+            <p>
+              <Link href={directionUrl} target="_blank" rel="noreferrer">
+                4813 W. Washington Blvd., Los Angeles, CA 90016
+              </Link>
+            </p>
+            <p>Monday - Friday, 8:00am - 3:00pm</p>
+            <p>
+              Phone: <a href="tel:3239375950">(323) 937-5950</a>
+            </p>
+            <p>
+              Email: <a href="mailto:info@willingworkers.org">info@willingworkers.org</a>
+            </p>
+          </article>
+
+          <div className="contact-map-card" id="map">
+            {apiKey ? (
+              <LoadScript googleMapsApiKey={apiKey}>
+                <GoogleMap
+                  mapContainerStyle={mapContainerStyle}
+                  center={center}
+                  zoom={14}
+                  options={mapOptions}
+                >
+                  <MarkerF
+                    position={center}
+                    label={{ text: "WW", color: "#146C94", fontWeight: "700" }}
+                    onClick={() => setIsInfoOpen(true)}
+                  />
+                  {isInfoOpen && (
+                    <InfoWindow
+                      position={center}
+                      onCloseClick={() => setIsInfoOpen(false)}
+                      zIndex={12}
+                    >
+                      <div className="contact-map-card__popup">
+                        <h3>Willing Workers</h3>
+                        <Link href={directionUrl} target="_blank" rel="noreferrer">
+                          4813 W. Washington Blvd., Los Angeles, CA 90016
+                        </Link>
+                      </div>
+                    </InfoWindow>
+                  )}
+                </GoogleMap>
+              </LoadScript>
+            ) : (
+              <div className="contact-map-card__fallback">
+                <p>Map unavailable: missing `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`.</p>
+              </div>
+            )}
           </div>
+        </section>
 
-          <div className="contact-text">
-            <h1>Schedule a tour today</h1>
-            <h5 style={{}}>
-              Willing Workers is currently giving tours following CDC
-              guidelines. Masks are mandatory during your visit.
-            </h5>
-            <h3>
-              {" "}
-              <a
-                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURI(
-                  "4813 W. Washington Blvd., Los Angeles, Los Angeles 90016"
-                )}`}
-                target="_blank"
-              >
-                4813 W. Washington Blvd.<br></br>
-                Los Angeles, CA 90016
-              </a>
-            </h3>
-            <h3>Monday - Friday 8:00am - 3:00pm</h3>
-            <h3>
-              Phone:<a href="tel:323-729-9898">323-729-9898</a>
-            </h3>
-            <h3>Email: info@willingworkers.org</h3>
-          </div>
-        </div>
-        <Footer />
-      </div>
-    </>
+        <PrimaryCtaBar
+          title="Interested in services first?"
+          description="Review programs to see the areas of support available to participants."
+          ctaLabel="Explore Programs"
+          ctaHref="/programs"
+        />
+      </main>
+
+      <Footer />
+    </div>
   );
 }
-
-export default Contact;

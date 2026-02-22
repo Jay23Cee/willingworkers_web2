@@ -1,37 +1,9 @@
-Analogous Colors:
+Improve the images.
+improve the nav bar.
+keep it constant.
 
-a. Green: rgba(35, 152, 100, 1)
-b. Blue-Green: rgba(33, 112, 98, 1)
-c. Yellow-Green: rgba(153, 192, 80, 1)
+fix the footer.
+    Text is too big. and images need to readjust.
 
-Complementary Colors:
-
-a. Green: rgba(35, 152, 100, 1)
-b. Red: rgba(244, 67, 54, 1)
-
-Monochromatic Colors:
-
-a. Dark Green: rgba(35, 152, 100, 1)
-b. Light Green: rgba(200, 230, 201, 1)
-c. Gray: rgba(189, 189, 189, 1)
-
-Triadic Colors:
-
-a. Green: rgba(35, 152, 100, 1)
-b. Purple: rgba(156, 39, 176, 1)
-c. Orange: rgba(255, 152, 0, 1)
-
-
-
-
-
-Remove program images
-change to specific color schema. Lets go with Blue since that's their Logo.
-CHANGE THE DONATION BAR. IT DOESN'T HAVE A LINK
-
-
-remove re animation. only one time only.
-
-
-Improve the MISSION SECTION. better color schema. 
+Career section needs to have it's card improve. maybe add a gap?
 

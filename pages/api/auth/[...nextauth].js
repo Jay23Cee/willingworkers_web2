@@ -11,78 +11,80 @@ export const authOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET, // Fixed typo here
-      // autoCreate: false,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
   callbacks: {
-    async signIn(user) {
-      if (user.account.provider === "google") {
-        try {
-          const existingUser = await prisma.user.findUnique({
-            where: { email: user.profile.email },
-          });
-          
-          if (!existingUser) {
-            const AllowUser = await prisma.allowUser.findUnique({
-              where: { email: user.profile.email },
-            });
-
-            if (!AllowUser) {
-              return false;
-            }
-          }
-
-          return true;
-        } catch (error) {
-          console.error("Error in signIn callback:", error);
-          return false;
-        }
+    async signIn({ user, account, profile }) {
+      if (account?.provider !== "google") {
+        return false;
       }
 
-      return false;
-    },
+      const email = user?.email ?? profile?.email;
+      if (!email) {
+        return false;
+      }
 
-    async session(session, user) {
       try {
-        const dbUser = await prisma.user.findUnique({
-          where: {
-            email: session.user.email,
-          },
+        const existingUser = await prisma.user.findUnique({
+          where: { email },
         });
 
-        if (!["admin", "moderator"].includes(dbUser.role)) {
-          const existingUser = await prisma.allowUser.findUnique({
-            where: { email: session.user.email },
+        if (existingUser) {
+          return true;
+        }
+
+        const allowUser = await prisma.allowUser.findUnique({
+          where: { email },
+        });
+
+        return Boolean(allowUser);
+      } catch (error) {
+        console.error("Error in signIn callback:", error);
+        return false;
+      }
+    },
+
+    async session({ session }) {
+      try {
+        const email = session.user?.email;
+        if (!email) {
+          return session;
+        }
+
+        const dbUser = await prisma.user.findUnique({
+          where: { email },
+        });
+
+        if (!dbUser) {
+          return session;
+        }
+
+        let finalUser = dbUser;
+
+        if (!["admin", "moderator"].includes(dbUser.role ?? "")) {
+          const allowedUser = await prisma.allowUser.findUnique({
+            where: { email },
           });
 
-          if (existingUser) {
-            await prisma.user.update({
-              where: { email: session.user.email },
-              data: { name: existingUser.name, role: existingUser.role },
+          if (allowedUser) {
+            finalUser = await prisma.user.update({
+              where: { email },
+              data: { name: allowedUser.name, role: allowedUser.role ?? "moderator" },
             });
           }
         }
+
+        session.user.id = finalUser.id;
+        session.user.role = finalUser.role ?? "";
+        session.user.name = finalUser.name ?? session.user.name;
       } catch (error) {
         console.error("Error finding user:", error);
       }
 
       return session;
     },
-    async createUser(user, _req) {
-      const { emailVerified, ...userData } = user;
-      
-      try {
-        return await prisma.user.create({
-          data: userData,
-        });
-      } catch (error) {
-        console.error("Error creating user:", error);
-        return null;
-      }
-    },
   },
-  
   pages: {
     error: "/admin",
   },

@@ -24,7 +24,7 @@ interface EditJobPostProps {
 
 export default function JobPostingEditor({
   prop,
-  setSelectedOption,
+  setSelectedOption: _setSelectedOption,
 }: EditJobPostProps) {
   const textareaDescription = useRef<HTMLTextAreaElement | null>(null);
   const now = new Date();
@@ -261,7 +261,7 @@ export default function JobPostingEditor({
         checked={jobPosting.qualifications.includes("Bachelor's Degree")}
         onChange={handleQualificationsChange}
       />
-      <label htmlFor="bachelor_degree">Bachelor's Degree</label>
+      <label htmlFor="bachelor_degree">Bachelor&apos;s Degree</label>
     </li>
   </ul>
 </div>

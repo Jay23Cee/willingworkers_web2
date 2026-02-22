@@ -1,131 +1,90 @@
-@import '../basic/colors';
+@use "../basic/colors" as *;
 
-.Footer {
-  width: 100vw;
-  height: auto; // Changed to auto to fit the content
-  background-color: $color-deep-blue;
-  z-index: 12;
-  color: white !important;
+.site-footer {
+  margin-top: 2.5rem;
+  background: var(--accent-strong);
+  color: #fff;
+}
+
+.site-footer__inner {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 2rem;
+  padding-top: 2.2rem;
+  padding-bottom: 2rem;
+}
+
+.site-footer__brand {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  word-wrap: break-word;
-  padding: 20px; // Added padding for better spacing
-  
-  a {
-    color: $color-light-gray;
+  flex-direction: column;
+  gap: 0.9rem;
 
-    &:hover {
-      color: blue;
-    }
-  }
-
-  h1 {
-    font-size: 1.25rem; // Adjusted font size for h1
-    color: white !important;
-  }
-
-  h3 {
-    font-size: 1rem; // Adjusted font size for h3
-    color: white !important;
+  h2 {
+    color: #fff;
+    font-size: clamp(1.3rem, 2.2vw, 1.8rem);
   }
 
   p {
-    font-size: 0.875rem; // Adjusted font size for p
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 52ch;
+  }
+}
+
+.site-footer__details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  h3 {
+    color: #fff;
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
   }
 
-  // Social media icons container
-  .social-icons {
-    display: flex;
+  a {
+    color: rgba(255, 255, 255, 0.94);
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.5);
+
+    &:hover {
+      text-decoration-color: #fff;
+    }
+  }
+}
+
+.site-footer__social {
+  margin-top: 0.7rem;
+  display: flex;
+  gap: 0.6rem;
+
+  a {
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
-    gap: 10px; // Adjusted gap
-    margin-top: 20px; // Added margin for better spacing
-  }
+    text-decoration: none;
+    transition: background-color 0.2s ease;
 
-  // Image styling for responsiveness
-  img {
-    width: 40px; // Adjusted width for images
-    height: auto;
-  }
-
-  // Mobile styles (screen width less than 576px)
-  @media (max-width: 575px) {
-    flex-direction: column;
-    text-align: center;
-    
-    h1 {
-      font-size: 1rem; // Adjust font size for mobile
-    }
-    
-    h3 {
-      font-size: 0.875rem; // Adjust font size for mobile
-    }
-    
-    p {
-      font-size: 0.75rem; // Adjust font size for mobile
-    }
-
-    .social-icons img {
-      width: 30px; // Adjust image size for mobile
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
     }
   }
+}
 
-  // Tablet styles (screen width between 576px and 767px)
-  @media (min-width: 576px) and (max-width: 767px) {
-    flex-direction: column;
-    text-align: center;
-    
-    h1 {
-      font-size: 1.125rem; // Adjust font size for tablet
-    }
-    
-    h3 {
-      font-size: 0.9375rem; // Adjust font size for tablet
-    }
-    
-    p {
-      font-size: 0.8125rem; // Adjust font size for tablet
-    }
+.site-footer__copyright {
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
+  padding: 0.95rem 0;
+  text-align: center;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+}
 
-    .social-icons img {
-      width: 35px; // Adjust image size for tablet
-    }
-  }
-
-  // Desktop styles (screen width greater than or equal to 768px)
-  @media (min-width: 768px) {
-    font-size: 1rem;
-    flex-direction: row;
-    text-align: left;
-    padding: 20px 50px; // Added padding for desktop
-
-    .col-md-3,
-    .col-lg-4,
-    .col-xl-3 {
-      text-align: center; // Ensure left alignment for columns on desktop
-    }
-
-    .social-icons-container {
-      display: flex;
-      justify-content: center; // Center the icons container
-      width: 100%;
-    }
-
-    h1 {
-      font-size: 1.25rem; // Adjust font size for desktop
-    }
-    
-    h3 {
-      font-size: 1rem; // Adjust font size for desktop
-    }
-    
-    p {
-      font-size: 0.875rem; // Adjust font size for desktop
-    }
-
-    .social-icons img {
-      width: 40px; // Adjust image size for desktop
-    }
+@media (max-width: 840px) {
+  .site-footer__inner {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 }

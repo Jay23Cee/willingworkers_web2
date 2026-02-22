@@ -1,32 +1,41 @@
 import prisma from "../../prisma/client";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "./auth/[...nextauth]";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { requireRole } from "./_lib/auth";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === "DELETE") {
-    const { id } = req.body;
+  if (req.method !== "DELETE") {
+    return res
+      .status(405)
+      .json({ error: "Method not allowed", code: "METHOD_NOT_ALLOWED" });
+  }
 
-    if (!id) {
-      return res.status(400).json({ message: "ID is required for deletion." });
-    }
+  const auth = await requireRole(req, res, ["admin", "moderator"]);
+  if (!auth.ok) {
+    return;
+  }
 
-    try {
-      await prisma.jobPosting.delete({
-        where: { id },
-      });
+  const { id } = req.body;
 
-      res.status(200).json({ message: "Job post deleted successfully." });
-    } catch (err: any) {
-      console.error(err);
-      res.status(500).json({
-        error: "Internal server error",
-      });
-    }
-  } else {
-    res.status(405).json({ error: "Method not allowed" });
+  if (!id) {
+    return res
+      .status(400)
+      .json({ error: "ID is required for deletion.", code: "BAD_REQUEST" });
+  }
+
+  try {
+    await prisma.jobPosting.delete({
+      where: { id },
+    });
+
+    res.status(200).json({ message: "Job post deleted successfully." });
+  } catch (err: any) {
+    console.error(err);
+    res.status(500).json({
+      error: "Internal server error",
+      code: err?.code,
+    });
   }
 }

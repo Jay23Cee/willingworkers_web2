@@ -1,74 +1,117 @@
+# Willing Workers Web
 
-# Willing Workers
+Willing Workers is a Next.js web app for public organization pages and an admin dashboard that manages job postings and admin/moderator access.
 
-Willing Workers is an organization that supports adults with special needs. Their website includes a job listing section for individuals interested in working in this field, allowing for easy submission of applications and resumes. The site is developed using React, Next.js, TypeScript, MongoDB, HTML, Sass, and CSS.
+## Tech Stack
 
-## Features
+- Next.js 13 (`app/` router + `pages/api` routes)
+- TypeScript
+- Prisma + MongoDB
+- NextAuth (Google provider)
+- Redux Toolkit
+- React Query
+- SendGrid (resume/application email delivery)
+- Sass
 
-- **Dashboard with User Roles**: The application includes a dashboard that provides different user roles for admins and moderators. Admins and moderators have specific privileges and access levels for managing job postings and other website functionalities.
+## Project Structure
 
-- **Job Postings**: Admins and moderators can create and manage job postings. They have the ability to add job details, requirements, and other relevant information. Job postings are displayed on the website for interested applicants to view.
+- `app/`: UI routes and client components
+- `pages/api/`: API endpoints and NextAuth config
+- `prisma/`: schema and Prisma client
+- `styles/`: global/component SCSS
+- `__test__/`: Jest tests
 
-- **User Management**: Admins can create and manage new admins and moderators, granting them specific permissions and access levels.
+## Authentication And Authorization
 
-- **Job Application Submissions**: The web application allows applicants to conveniently submit their application forms and resumes online. Once submitted, the application and resume are automatically sent via email to the designated hiring managers, streamlining the hiring process and providing an efficient way for employers to find their perfect match.
+- Sign-in is Google-only.
+- Access is allow-list based via `AllowUser` in MongoDB.
+- Session role is normalized from DB in NextAuth callback.
+- Server-side role checks are enforced on mutating API routes:
+  - Admin only: `/api/addAdmin`, `/api/updateUser`, `/api/deleteUser`
+  - Admin + Moderator: `/api/addPost`, `/api/editPost`, `/api/deletePost`
 
-- **Responsive Design**: The website is designed to be responsive, ensuring optimal viewing and interaction across various devices and screen sizes.
+## Environment Variables
 
-- **Interactive Animations**: Interactive animations are incorporated to enhance user engagement and provide a visually appealing experience.
+Create `.env` and `.env.local` (or your deployment equivalents) with:
 
-- **Contact Form**: The application includes a contact form for user queries, allowing users to easily reach out for any inquiries or feedback.
+```env
+# Database
+DATABASE_URL=
 
-## Getting Started
+# Maps
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=
 
-To run the Willing Workers web application locally, follow these steps:
+# Email
+SENDGRID_API_KEY=
+SENDGRID_API_EMAIL=
 
-1. **Clone the Repository**: Clone the repository from GitHub:
-   \`\`\`bash
-   git clone https://github.com/Jay23Cee/WillingWorkersSite-1.git
-   \`\`\`
+# Auth
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+AUTH_SECRET=
+NEXTAUTH_URL=http://localhost:3000
+```
 
-2. **Install Dependencies**: Navigate to the project directory and install the necessary dependencies:
-   \`\`\`bash
-   cd WillingWorkersSite-1
-   npm install
-   \`\`\`
+## Local Development
 
-3. **Set Up MongoDB**: Ensure you have MongoDB installed and running. Create a database and configure the connection string in the application’s environment variables:
-   \`\`\`env
-   MONGODB_URI=your_mongodb_connection_string
-   \`\`\`
+1. Install dependencies:
 
-4. **Run the Application**: Start the development server:
-   \`\`\`bash
-   npm run dev
-   \`\`\`
+```bash
+npm install
+```
 
-5. **Access the Application**: Open your browser and navigate to \`http://localhost:3000\` to access the web application.
+2. Generate Prisma client:
 
-## Demo
+```bash
+npx prisma generate
+```
 
-Check out the live demo of the Willing Workers web application: [Willing Workers Demo](https://willingworkers-web2.vercel.app).
+3. Run development server:
 
-## Contributing
+```bash
+npm run dev
+```
 
-Contributions to the Willing Workers project are welcome! If you find any issues or have suggestions for improvements, please feel free to submit a pull request or open an issue on the GitHub repository.
+4. Open:
 
-## License
+`http://localhost:3000`
 
-This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+## Build And Run
 
-## Contact
+```bash
+npm run build
+npm start
+```
 
-For any inquiries or support, please reach out via the contact form on our website or open an issue on GitHub.
+## Testing
 
+```bash
+npm test
+npm run coverage
+```
 
-Check out the live demo of the Willing Workers web application: [Willing Workers Demo](https://willingworkers-web2.vercel.app).
+Type-check:
 
-## Contributing
+```bash
+npx tsc --noEmit
+```
 
-Contributions to the Willing Workers project are welcome! If you find any issues or have suggestions for improvements, please feel free to submit a pull request or open an issue on the GitHub repository.
+Lint:
 
-## License
+```bash
+npm run lint
+```
 
-This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+## Docker
+
+Build and run using the included `Dockerfile`:
+
+```bash
+docker build -t willingworkers-web .
+docker run -p 3000:3000 --env-file .env --env-file .env.local willingworkers-web
+```
+
+## Notes
+
+- This repo currently keeps a hybrid routing model (`app/` + `pages/api`) intentionally.
+- Prisma schema is configured for MongoDB and should not be switched without migration planning.

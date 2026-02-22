@@ -14,14 +14,11 @@ export default function ListJobPosting(props: any) {
     (state: any) => state.jobPostings.jobPostings
   );
   const JobPostings_list = useSelector((state: any) => state.jobPostings);
+  const initialJobPostingCount = JobPostings_list.jobPostings.length;
   const [jobListPostings, setJobListPostings] = useState<JobPosting[]>(
-    JobPostings_list.jobPostings.length > 0
-      ? (JobPostings_list.jobPostings as JobPosting[])
-      : []
+    initialJobPostingCount > 0 ? (JobPostings_list.jobPostings as JobPosting[]) : []
   );
-  const [isLoading, setIsLoading] = useState(
-    JobPostings_list.jobPostings.length > 0
-  );
+  const [isLoading, setIsLoading] = useState(initialJobPostingCount > 0);
 
   useEffect(() => {
     let isMounted = true;
@@ -35,14 +32,14 @@ export default function ListJobPosting(props: any) {
       }
     }
 
-    if (!JobPostings_list.jobPostings.length) {
+    if (!initialJobPostingCount) {
       fetchData();
     }
 
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [dispatch, initialJobPostingCount]);
 
   function handleDelete(id: string) {
     try {

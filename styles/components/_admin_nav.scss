@@ -20,8 +20,8 @@
       display:flex;
       flex-direction: row;
       font-weight:800;
-      justify-content: end;
-      align-items: end;
+      justify-content: flex-end;
+      align-items: flex-end;
 
     li{
 
@@ -78,8 +78,8 @@
         cursor: pointer !important;
       
         margin:10px;
-        justify-self: end;
-        align-self: end;
+        justify-self: flex-end;
+        align-self: flex-end;
       }
   
       .menu-admin {
@@ -165,7 +165,7 @@
         color: green;
         font-size: large;
         justify-content:center;
-        text-align: end;
+        text-align: right;
         flex-direction: column;
         // .menu-admin{
         //     display:flex;

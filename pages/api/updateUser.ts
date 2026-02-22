@@ -1,10 +1,8 @@
 import prisma from "../../prisma/client";
-import { hash } from "bcryptjs";
 import { NextApiRequest, NextApiResponse } from "next";
-import { v4 as uuidv4 } from "uuid";
+import { requireRole } from "./_lib/auth";
 
 interface AddAdminRequest {
-  id: string;
   name: string;
   email: string;
   role: string;
@@ -15,36 +13,44 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    return res
+      .status(405)
+      .json({ error: "Method not allowed", code: "METHOD_NOT_ALLOWED" });
+  }
+
+  const auth = await requireRole(req, res, ["admin"]);
+  if (!auth.ok) {
+    return;
   }
 
   const { name, email, role } = req.body as AddAdminRequest;
-  const id = uuidv4();
-  // Validate the required fields
 
   if (!email || !name || !role) {
     return res
       .status(400)
-      .json({ error: "Name, email, and password are required" });
+      .json({ error: "Name, email, and role are required", code: "BAD_REQUEST" });
   }
 
-  // Check if user already exists with the given email
-  const existingAdmin = await prisma.allowUser.findUnique({ where: { email } });
-  if (existingAdmin?.role != "admin") {
-    return res.status(400).json({ error: "Unauthorize User" });
+  if (!["admin", "moderator"].includes(role)) {
+    return res
+      .status(400)
+      .json({ error: "Invalid role", code: "BAD_REQUEST" });
   }
 
-  // Hash the password before storing it in the database
-  // const hashedPassword = await hash(password, 10);
+  const existingTarget = await prisma.allowUser.findUnique({ where: { email } });
+  if (!existingTarget) {
+    return res
+      .status(404)
+      .json({ error: "User not found in allow list", code: "NOT_FOUND" });
+  }
 
-  // updating allowusers and user table
   try {
     await prisma.$transaction([
       prisma.allowUser.update({
         where: { email },
         data: { role },
       }),
-      prisma.user.update({
+      prisma.user.updateMany({
         where: { email },
         data: { role },
       }),
@@ -52,9 +58,11 @@ export default async function handler(
 
     res.status(201).json({
       message: "User updated successfully",
-      user: { id, name, email, role },
+      user: { id: existingTarget.id, name, email, role },
     });
-  } catch (error) {
-    res.status(500).json({ error: "Something went wrong" });
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ error: "Something went wrong", code: error?.code ?? "SERVER_ERROR" });
   }
 }

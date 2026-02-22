@@ -14,7 +14,7 @@ import { User } from "../components/user";
 import { RootState } from "../redux/reducer/rootReducer";
 
 
-export default function getAuth(roles: string[]) {
+export default function useAuth(roles: string[]) {
   const [users, setUsers] = useState<User | null>(null);
   const [validate, setValidate] = useState(false);
 

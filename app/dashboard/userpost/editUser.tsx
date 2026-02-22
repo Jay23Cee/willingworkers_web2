@@ -12,7 +12,7 @@ interface EditUserPostProps {
 
 export default function EditUserPost({
   prop,
-  setSelectedOption,
+  setSelectedOption: _setSelectedOption,
 }: EditUserPostProps) {
   const [admin, setAdmin] = useState({
     name: prop.name,
@@ -79,10 +79,10 @@ export default function EditUserPost({
               <option value="" disabled>
                 -- Select Role --
               </option>
-              <option value="admin" selected={prop.role === "admin"}>
+              <option value="admin">
                 Admin
               </option>
-              <option value="moderator" selected={prop.role === "moderator"}>
+              <option value="moderator">
                 Moderator
               </option>
             </select>

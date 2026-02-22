@@ -18,31 +18,25 @@ export default function ListAllUser(props: any) {
   );
   const [isLoading, setIsLoading] = useState<boolean>(userList.length > 0);
   const dispatch = useDispatch();
-  const [usercount, setUsercount] = useState('')
 
   useEffect(() => {
     let isMounted = true;
     async function fetchData() {
       try {
-        const data = await getUserList(user.email);
+        const data = await getUserList();
 
         if (data && isMounted) {
           dispatch(setBulkUser(data));
-        
           setUserList(data as User[]);
-          setIsLoading(true);
-          // setUserList(data as User[]);
-
           setIsLoading(true);
         }
       } catch (error) {
         console.error(error);
-       
         setIsLoading(false);
       }
     }
 
-    if (user.role == "admin" && users.length == 0) {
+    if (user.role === "admin" && users.length === 0) {
       fetchData();
     }
     if (user.role === "admin" && users.length > 0) {
@@ -53,19 +47,18 @@ export default function ListAllUser(props: any) {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [dispatch, user.role, users]);
 
  async function handleDelete(user: User) {
-    // Logic to delete the job posting with the given ID
     const id = user.id
-    console.log(id)
+
     try {
      await deleteUser(id as string);
       setUserList(userList.filter((userList) => userList.id !== id));
-      toast.success("Job Post Deleted");
+      toast.success("User deleted");
     } catch (error:any) {
       console.error(error.message);
-      toast.error("Error deleting job post");
+      toast.error("Error deleting user");
     }
   }
 

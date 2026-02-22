@@ -1,74 +1,62 @@
 "use client";
 
-import React, { useState } from "react";
 import { JobPosting } from "../components/jobpost";
 
 export default function DisplayJobList(props: {
   jobListPostings: JobPosting[];
   applyToJobPosting: (isApplying: boolean, jobPosting: JobPosting) => void;
 }) {
-  const [jobListPostings, setJobListPostings] = useState<JobPosting[]>(
-    props.jobListPostings as JobPosting[]
-  );
-  const [isLoading, setIsLoading] = useState(jobListPostings.length > 0);
-  const [error, setError] = useState("");
-
-  const handleApplyClick = (jobPosting: JobPosting) => {
-    props.applyToJobPosting(true, jobPosting);
-  };
+  const hasPostings = props.jobListPostings.length > 0;
 
   return (
     <div className="career-jobpost-container">
-      {isLoading ? (
-        jobListPostings.map((jobPosting: any, index: any) => (
-          <div className="job-posting" key={index}>
-            <h2>{jobPosting.title}</h2>
-            <h4>{jobPosting.location}</h4>
-            <p>Salary: {jobPosting.salary}</p>
-            <p>Date: {jobPosting.date}</p>
-            <p
-              style={{
-                fontSize: "18px",
-                fontWeight: "bold",
-                color: "red",
-                textAlign: "center",
-                padding: "10px",
-              }}
-            >
-              To apply, please send your application to the following email:{" "}
-              <a
-                href={`mailto:${jobPosting.contact.email}`}
-                style={{ color: "blue" }}
-              >
-                {jobPosting.contact.email}
-              </a>
-            </p>
-            <hr />
-            <h3>Description:</h3>
+      {hasPostings ? (
+        props.jobListPostings.map((jobPosting) => (
+          <article className="job-posting" key={jobPosting.id}>
+            <header className="job-posting__header">
+              <h2>{jobPosting.title}</h2>
+              <p>
+                {jobPosting.location} | {jobPosting.date}
+              </p>
+            </header>
+
+            <p className="job-posting__salary">Salary: {jobPosting.salary}</p>
             <p>{jobPosting.description}</p>
-            <h3>Qualifications:</h3>
+
+            <h3>Qualifications</h3>
             <p>
               {jobPosting.qualifications && jobPosting.qualifications.length > 0
                 ? jobPosting.qualifications.join(", ")
-                : "High School"}
+                : "High School diploma or equivalent"}
             </p>
 
-            <h3>Contact:</h3>
+            <h3>Hiring Contact</h3>
             <p>Name: {jobPosting.contact.name}</p>
-            <p>Email: {jobPosting.contact.email}</p>
+            <p>
+              Email: <a href={`mailto:${jobPosting.contact.email}`}>{jobPosting.contact.email}</a>
+            </p>
             <p>Phone: {jobPosting.contact.phone}</p>
-          </div>
+
+            <div className="job-posting__actions">
+              <button
+                type="button"
+                className="job-posting__apply"
+                onClick={() => props.applyToJobPosting(true, jobPosting)}
+              >
+                Apply Now
+              </button>
+            </div>
+          </article>
         ))
       ) : (
-        <div className="no-job-posting">
+        <article className="no-job-posting">
+          <h2>No openings at the moment</h2>
           <p>
-            Sorry, no job postings are currently available. Please feel free
-            to&nbsp;
-            <a href="tel:123-456-7890">call</a>&nbsp;or&nbsp;
-            <a href="mailto:jobs@example.com">email</a>&nbsp; us to inquire
-            about future openings.
+            We update this page frequently. Please check back soon or email
+            <a href="mailto:info@willingworkers.org"> info@willingworkers.org</a>
+            for upcoming opportunities.
           </p>
-        </div>
+        </article>
       )}
     </div>
   );
